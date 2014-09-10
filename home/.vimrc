@@ -39,7 +39,10 @@ Bundle 'ervandew/supertab'
 " Snippets are separated from the engine. Add this if you want them:
 Plugin 'honza/vim-snippets'
 call vundle#end()            " required"
-"
+
+"Add default YCM C++ Completion file & whitelist it
+let g:ycm_global_ycm_extra_conf = '~/.YCM/.ycm_extra_conf.py'
+let g:ycm_extra_conf_globlist = ['~/.YCM/*','!~/*']
 " make YCM compatible with UltiSnips (using supertab)
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
@@ -85,10 +88,10 @@ filetype indent on
 set bs=indent,eol,start     " Backspace over everything in insert mode"
 "Tab defaults
 set ai
-set ts=4
-set sts=4
+set sw=2
+set ts=2
+set sts=2
 set et
-set sw=4
 set textwidth=79
 " Mark down file type
 au BufRead,BufNewFile *.md set filetype=markdown
