@@ -35,13 +35,20 @@ Plugin 'Shougo/vimshell.vim'
 Plugin 'vim-ruby/vim-ruby'
 " Track the engine.
 Plugin 'SirVer/ultisnips'
+Bundle 'ervandew/supertab'
 " Snippets are separated from the engine. Add this if you want them:
 Plugin 'honza/vim-snippets'
 call vundle#end()            " required"
-" Trigger configuration for Ultisnip
-let g:UltiSnipsExpandTrigger="`"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+"
+" make YCM compatible with UltiSnips (using supertab)
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
+" better key bindings for UltiSnipsExpandTrigger
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+
 "leader to execute ruby
 noremap <leader>rx :!ruby %<CR>
 "Airline Powerline fonts
@@ -124,27 +131,6 @@ let g:ghc = "/usr/bin/ghc"
 let g:ycm_semantic_triggers = {'haskell' : ['.']}
 "YouCompleteMe + Eclim integration?
 let g:EclimCompletionMethod = 'omnifunc'
-"UtilSnips+YouCompleteMe
-function! g:UltiSnips_Complete()
-    call UltiSnips#ExpandSnippet()
-    if g:ulti_expand_res == 0
-        if pumvisible()
-            return "\<C-n>"
-        else
-            call UltiSnips#JumpForwards()
-            if g:ulti_jump_forwards_res == 0
-               return "\<TAB>"
-            endif
-        endif
-    endif
-    return ""
-endfunction
-au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsListSnippets="<c-e>"
-" this mapping Enter key to <C-y> to chose the current highlight item 
-" and close the selection list, same as other IDEs.
-" CONFLICT with some plugins like tpope/Endwise
-inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
 syntax on
 
