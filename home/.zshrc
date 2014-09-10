@@ -56,7 +56,7 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-export PATH="$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"
+export PATH="$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/royalaid/Apps/WebStorm-135.1063"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
@@ -80,5 +80,4 @@ export PATH="$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 
 source "$HOME/.homesick/repos/homeshick/homeshick.sh"
-homeshick --quiet refresh
 fpath=($HOME/.homesick/repos/homeshick/completions $fpath)

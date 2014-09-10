@@ -10,6 +10,8 @@ Plugin 'gmarik/vundle'
 "Plugins
 Plugin 'flazz/vim-colorschemes'
 Plugin 'scrooloose/nerdtree'
+Plugin 'tpope/vim-surround'
+Plugin 'notalex/vim-run-live'
 "Git integration
 Plugin 'tpope/vim-fugitive'
 "HTML5
@@ -33,7 +35,9 @@ Plugin 'Shougo/vimproc.vim'
 Plugin 'Shougo/vimshell.vim'
 "Ruby
 Plugin 'vim-ruby/vim-ruby'
-" Track the engine.
+"Python
+Plugin 'klen/python-mode'
+" Track the snippet engine.
 Plugin 'SirVer/ultisnips'
 Bundle 'ervandew/supertab'
 " Snippets are separated from the engine. Add this if you want them:
@@ -96,28 +100,16 @@ set textwidth=79
 " Mark down file type
 au BufRead,BufNewFile *.md set filetype=markdown
 " HTML (tab width 2 chr, no wrapping)
-autocmd FileType html set sw=2
-autocmd FileType html set ts=2
-autocmd FileType html set sts=2
 autocmd FileType html set textwidth=0
 autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 " Python (tab width 4 chr, wrap at 79th char)
 autocmd FileType python set sw=4
 autocmd FileType python set ts=4
 autocmd FileType python set sts=4
-autocmd FileType python set textwidth=79
 autocmd FileType python set omnifunc=pythoncomplete#Complete
 " CSS (tab width 2 chr, wrap at 79th char)
-autocmd FileType css set sw=2
-autocmd FileType css set ts=2
-autocmd FileType css set sts=2
-autocmd FileType css set textwidth=79
 autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 " JavaScript (tab width 2 chr, wrap at 79th)
-autocmd FileType javascript set sw=2
-autocmd FileType javascript set ts=2
-autocmd FileType javascript set sts=2
-autocmd FileType javascript set textwidth=79
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
 " Tab specific option
 autocmd FileType haskell set tabstop=8 "A tab is 8 spaces
