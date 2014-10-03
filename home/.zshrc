@@ -13,6 +13,10 @@ ZSH_THEME="gallois"
 alias ftb="nohup java -jar ~/Apps/launcher^FTB_Launcher.jar > /dev/null &"
 alias tmux="tmux -2"
 
+#VirtualEnvWrapper
+export WORKON_HOME="$HOME/.virtualenvs"
+source /usr/local/bin/virtualenvwrapper.sh
+
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
