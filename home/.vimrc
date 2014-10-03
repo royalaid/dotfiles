@@ -10,6 +10,7 @@ Plugin 'gmarik/vundle'
 "Plugins
 Plugin 'flazz/vim-colorschemes'
 Plugin 'scrooloose/nerdtree'
+Plugin 'wincent/command-t'
 Plugin 'tpope/vim-surround'
 Plugin 'notalex/vim-run-live'
 "Git integration
