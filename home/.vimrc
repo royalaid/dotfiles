@@ -9,8 +9,11 @@ Plugin 'gmarik/vundle'
 "End Vundle Preamble
 "Plugins
 Plugin 'flazz/vim-colorschemes'
+"File system plugins
 Plugin 'scrooloose/nerdtree'
 Plugin 'wincent/command-t'
+
+Plugin 'scrooloose/nerdcommenter'
 Plugin 'tpope/vim-surround'
 Plugin 'notalex/vim-run-live'
 "Git integration
