@@ -21,4 +21,10 @@ To Install:
 
 9. [Compile YCM](https://valloric.github.io/YouCompleteMe/)
 
-10.(Optional) [Install Powerline fonts](https://powerline.readthedocs.org/en/latest/installation/linux.html#font-installation)
+10. [Compile Command-t](https://github.com/wincent/Command-T)
+   `sudo apt-get install ruby-dev #Install Ruby header files if you don't have them already` 
+   `cd ~/.vim/bundle/command-t/ruby/command-t`
+   `ruby extconf.rb`
+   `make` 
+
+11.(Optional) [Install Powerline fonts](https://powerline.readthedocs.org/en/latest/installation/linux.html#font-installation)
