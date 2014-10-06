@@ -22,6 +22,7 @@ To Install:
 9. [Compile YCM](https://valloric.github.io/YouCompleteMe/)
 
 10. [Compile Command-t](https://github.com/wincent/Command-T)
+
    `sudo apt-get install ruby-dev #Install Ruby header files if you don't have them already`
 
    `cd ~/.vim/bundle/command-t/ruby/command-t`
