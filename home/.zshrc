@@ -83,7 +83,7 @@ export PATH="$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 
-#
+# From http://madebynathan.com/2011/10/04/a-nicer-way-to-use-xclip/
 # A shortcut function that simplifies usage of xclip.
 # - Accepts input from either stdin (pipe), or params.
 # ------------------------------------------------
@@ -127,6 +127,16 @@ alias cbssh="cbf ~/.ssh/id_rsa.pub"
 alias cbwd="pwd | cb"  
 # Copy most recent command in bash history
 alias cbhs="cat $HISTFILE | tail -n 1 | cb"  
+
+
+#Grab all repo branches after fresh clone
+#from https://coderwall.com/p/0ypmka
+function gitall(){
+  for branch in `git branch -a | grep remotes | grep -v HEAD | grep -v master `; do
+    git branch --track ${branch#remotes/origin/} $branch
+  done
+}
+
 
 source "$HOME/.homesick/repos/homeshick/homeshick.sh"
 fpath=($HOME/.homesick/repos/homeshick/completions $fpath)
