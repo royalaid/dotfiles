@@ -9,13 +9,22 @@ Plugin 'gmarik/vundle'
 "End Vundle Preamble
 "Plugins
 Plugin 'flazz/vim-colorschemes'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'scrooloose/syntastic'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'tpope/vim-surround'
+Plugin 'ervandew/supertab'
+Plugin 'notalex/vim-run-live'
+"Snippet engine.
+Plugin 'SirVer/ultisnips'
+"Snippets are separated from the engine. 
+Plugin 'honza/vim-snippets'
+"Airline
+Plugin 'bling/vim-airline'
+Plugin 'edkolev/tmuxline.vim'
 "File system plugins
 Plugin 'scrooloose/nerdtree'
 Plugin 'wincent/command-t'
-
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'tpope/vim-surround'
-Plugin 'notalex/vim-run-live'
 "Git integration
 Plugin 'tpope/vim-fugitive'
 "HTML5
@@ -25,27 +34,18 @@ Plugin 'othree/html5.vim'
 Plugin 'jelera/vim-javascript-syntax'
 Plugin 'pangloss/vim-javascript'
 Plugin 'nathanaelkane/vim-indent-guides'
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'scrooloose/syntastic'
 Plugin 'marijnh/tern_for_vim'
-"Airline
-Plugin 'bling/vim-airline'
-Plugin 'edkolev/tmuxline.vim'
 "Delimiter Matching
 Plugin 'Raimondi/delimitMate'
 "Haskell Plugins
-Plugin 'laurilehmijoki/haskellmode-vim'
+Plugin 'dag/vim2hs'
+Plugin 'eagletmt/neco-ghc'
 Plugin 'Shougo/vimproc.vim'
 Plugin 'Shougo/vimshell.vim'
 "Ruby
 Plugin 'vim-ruby/vim-ruby'
 "Python
 Plugin 'klen/python-mode'
-" Track the snippet engine.
-Plugin 'SirVer/ultisnips'
-Bundle 'ervandew/supertab'
-" Snippets are separated from the engine. Add this if you want them:
-Plugin 'honza/vim-snippets'
 call vundle#end()            " required"
 
 "Add default YCM C++ Completion file & whitelist it
@@ -111,13 +111,12 @@ autocmd FileType python set sw=4
 autocmd FileType python set ts=4
 autocmd FileType python set sts=4
 let g:pymode_rope_completion = 0
-"autocmd FileType python set omnifunc=pythoncomplete#Complete
 
-" CSS (tab width 2 chr, wrap at 79th char)
+"CSS (tab width 2 chr, wrap at 79th char)
 autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-" JavaScript (tab width 2 chr, wrap at 79th)
+"JavaScript (tab width 2 chr, wrap at 79th)
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-" Tab specific option
+"Haskell Tab specific option via (http://www.haskell.org/haskellwiki/Vim)
 autocmd FileType haskell set tabstop=8 "A tab is 8 spaces
 autocmd FileType haskell set expandtab "Always uses spaces instead of tabs
 autocmd FileType haskell set softtabstop=4 "Insert 4 spaces when tab is pressed
@@ -126,7 +125,7 @@ autocmd FileType haskell set smarttab "Indent instead of tab at start of line
 autocmd FileType haskell set shiftround "Round spaces to nearest shiftwidth multiple
 autocmd FileType haskell set nojoinspaces "Don't convert spaces to tabs
 " use ghc functionality for haskell files
-au Bufenter *.hs compiler ghc
+au Bufenter *.hs compiler hlint
 let g:haddock_browser = "/usr/bin/firefox"
 let g:ghc = "/usr/bin/ghc"
 let g:ycm_semantic_triggers = {'haskell' : ['.']}
@@ -134,4 +133,3 @@ let g:ycm_semantic_triggers = {'haskell' : ['.']}
 let g:EclimCompletionMethod = 'omnifunc'
 
 syntax on
-
