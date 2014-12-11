@@ -111,6 +111,7 @@ autocmd FileType python set sw=4
 autocmd FileType python set ts=4
 autocmd FileType python set sts=4
 let g:pymode_rope_completion = 0
+let g:pymode_rope_complete_on_dot = 0
 "autocmd FileType python set omnifunc=pythoncomplete#Complete
 
 " CSS (tab width 2 chr, wrap at 79th char)
