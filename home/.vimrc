@@ -54,6 +54,12 @@ Plugin 'kchmck/vim-coffee-script'
 Plugin 'leafgarland/typescript-vim'
 "TypeScript & Javascript
 Plugin 'jason0x43/vim-js-indent' 
+"CSS related
+Plugin 'tpope/vim-haml'
+Plugin 'groenewege/vim-less'
+Plugin 'hail2u/vim-css3-syntax'
+Plugin 'skammer/vim-css-color'
+
 call vundle#end()            " required"
 
 "Add default YCM C++ Completion file & whitelist it
