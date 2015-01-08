@@ -35,7 +35,7 @@ To Install:
 4. (optional) [Compile Command-t](https://github.com/wincent/Command-T)
 
    ```
-   sudo apt-get install ruby-dev #Install Ruby header files if you don't have them already
+   sudo apt-get install ruby ruby-dev
    cd ~/.vim/bundle/command-t/ruby/command-t
    ruby extconf.rb
    make
@@ -54,15 +54,29 @@ To Install:
    
 6. (optional) Setup [Tern for Vim](https://github.com/marijnh/tern_for_vim)
 
-   `curl -sL https://deb.nodesource.com/setup | sudo bash -` (latest) or `sudo apt-get install nodejs npm` (easy)
+   `curl -sL https://deb.nodesource.com/setup | sudo bash -` (latest) 
+   
+   or
+   
+   `sudo apt-get install nodejs npm` (easy)
    
    As per the Tern For Vim instructions:
 
-   "Caution: Because the node process is not run using your standard shell, the NVM version of node.js won't work. You need a global node executable."
+   "**Caution:** Because the node process is not run using your standard shell, the NVM version of node.js won't work. You need a global node executable."
 
    ```
    cd ~/.vim/bundle/tern_for_vim
    npm install
    ```
+   
+7. (optional) Web Dev Stuff
+   
+   ```
+   npm install -g typescript
+   npm install -g coffee-script
+   npm install -g coffeelint
+   npm install -g less
+   sudo gem install sass
+   ```
 
-7. (Optional) [Install Powerline fonts](https://powerline.readthedocs.org/en/latest/installation/linux.html#font-installation)
+8. (Optional) [Install Powerline fonts](https://powerline.readthedocs.org/en/latest/installation/linux.html#font-installation)
