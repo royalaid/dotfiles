@@ -46,6 +46,7 @@ Plugin 'Shougo/vimshell.vim'
 Plugin 'vim-ruby/vim-ruby'
 "Python
 Plugin 'klen/python-mode'
+Plugin 'nvie/vim-pyunit'
 call vundle#end()            " required"
 
 "Add default YCM C++ Completion file & whitelist it
