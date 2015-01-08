@@ -27,14 +27,6 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'wincent/command-t'
 "Git integration
 Plugin 'tpope/vim-fugitive'
-"HTML5
-Plugin 'othree/html5.vim'
-"Vim JavaScript page recommends
-"http://oli.me.uk/2013/06/29/equipping-vim-for-javascript/
-Plugin 'jelera/vim-javascript-syntax'
-Plugin 'pangloss/vim-javascript'
-Plugin 'nathanaelkane/vim-indent-guides'
-Plugin 'marijnh/tern_for_vim'
 "Delimiter Matching
 Plugin 'Raimondi/delimitMate'
 "Haskell Plugins
@@ -47,6 +39,21 @@ Plugin 'vim-ruby/vim-ruby'
 "Python
 Plugin 'klen/python-mode'
 Plugin 'nvie/vim-pyunit'
+"WebDevStuff
+"HTML5
+Plugin 'othree/html5.vim'
+"Vim JavaScript page recommends
+"http://oli.me.uk/2013/06/29/equipping-vim-for-javascript/
+Plugin 'jelera/vim-javascript-syntax'
+Plugin 'pangloss/vim-javascript'
+Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'marijnh/tern_for_vim'
+"CoffeeScript
+Plugin 'kchmck/vim-coffee-script'
+"TypeScript
+Plugin 'leafgarland/typescript-vim'
+"TypeScript & Javascript
+Plugin 'jason0x43/vim-js-indent' 
 call vundle#end()            " required"
 
 "Add default YCM C++ Completion file & whitelist it
