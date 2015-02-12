@@ -1,87 +1,121 @@
-"Vundle Premable
-set nocompatible 
-filetype off                  " required!
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" let Vundle manage Vundle
-" required! 
-Plugin 'gmarik/vundle'
-"End Vundle Preamble
-"Plugins
-Plugin 'flazz/vim-colorschemes'
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'scrooloose/syntastic'
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'tpope/vim-surround'
-Plugin 'ervandew/supertab'
-Plugin 'notalex/vim-run-live'
-"Snippet engine.
-Plugin 'SirVer/ultisnips'
-"Snippets are separated from the engine. 
-Plugin 'honza/vim-snippets'
-"Airline
-Plugin 'bling/vim-airline'
-Plugin 'edkolev/tmuxline.vim'
-"File system plugins
-Plugin 'scrooloose/nerdtree'
-Plugin 'wincent/command-t'
-"Git integration
-Plugin 'tpope/vim-fugitive'
-"Delimiter Matching
-Plugin 'Raimondi/delimitMate'
-"Haskell Plugins
-Plugin 'dag/vim2hs'
-Plugin 'eagletmt/neco-ghc'
-Plugin 'Shougo/vimproc.vim'
-Plugin 'Shougo/vimshell.vim'
+" Note: Skip initialization for vim-tiny or vim-small.
+if !1 | finish | endif
+
+if has('vim_starting')
+        if &compatible
+                set nocompatible               " Be iMproved
+        endif
+
+        " Required:
+        set runtimepath+=~/.vim/bundle/neobundle.vim/
+endif
+
+" Required:
+call neobundle#begin(expand('~/.vim/bundle/'))
+
+" Let NeoBundle manage NeoBundle
+" Required:
+NeoBundleFetch 'Shougo/neobundle.vim'
+
+" My Bundles here:
+" Refer to |:NeoBundle-examples|.
+" Note: You don't set neobundle setting in .gvimrc!
+NeoBundle 'Shougo/vimproc.vim', {
+                        \ 'build' : {
+                        \     'windows' : 'tools\update-dll-mingw',
+                        \     'cygwin' : 'make -f make_cygwin.mak',
+                        \     'mac' : 'make -f make_mac.mak',
+                        \     'linux' : 'make',
+                        \     'unix' : 'gmake',
+                        \    },
+                        \ }
+
+NeoBundle 'Shougo/neocomplete'
+call neobundle#config('neocomplete', {
+                        \ 'lazy' : 1,
+                        \ 'autoload' : {
+                        \   'insert' : 1,
+                        \ }})
+
+NeoBundle 'Shougo/neosnippet'
+call neobundle#config('neosnippet', {
+                        \ 'lazy' : 1,
+                        \ 'autoload' : {
+                        \   'insert' : 1,
+                        \   'filetypes' : 'snippet',
+                        \ }})
+" NeoBundle 'git@github.com:Shougo/neocomplcache-snippets-complete.git'
+NeoBundle 'Shougo/neosnippet-snippets'
+NeoBundle 'honza/vim-snippets'
+NeoBundle 'othree/javascript-libraries-syntax.vim'
+NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'Shougo/neobundle-vim-scripts'
+NeoBundle 'Shougo/unite.vim',
+call neobundle#config('unite.vim',{
+                        \ 'lazy' : 1,
+                        \ 'autoload' : {
+                        \   'commands' : [{ 'name' : 'Unite',
+                        \                   'complete' : 'customlist,unite#complete_source'},
+                        \                 'UniteWithCursorWord', 'UniteWithInput']
+                        \ }})
+
+NeoBundle 'xolox/vim-misc'
+NeoBundle 'kien/ctrlp.vim/'
+NeoBundle 'mbbill/undotree'
+NeoBundle 'flazz/vim-colorschemes'
+NeoBundle 'scrooloose/syntastic'
+NeoBundle 'tpope/vim-surround'
+NeoBundle 'bling/vim-airline' 
+NeoBundle 'edkolev/tmuxline.vim'
+NeoBundle 'scrooloose/nerdtree'
+NeoBundle 'scrooloose/nerdcommenter'
+NeoBundle 'majutsushi/tagbar'
+NeoBundle 'Raimondi/delimitMate'
+
+"Ctags stuff and related
+NeoBundle 'xolox/vim-easytags'
 "Ruby
-Plugin 'vim-ruby/vim-ruby'
+NeoBundle 'vim-ruby/vim-ruby'
 "Python
-Plugin 'klen/python-mode'
-Plugin 'nvie/vim-pyunit'
+NeoBundle 'klen/python-mode'
+NeoBundle 'nvie/vim-pyunit'
+"C & C++
+NeoBundle 'vim-scripts/c.vim'
 "WebDevStuff
 "HTML5
-Plugin 'othree/html5.vim'
+NeoBundle 'othree/html5.vim'
 "Vim JavaScript page recommends
 "http://oli.me.uk/2013/06/29/equipping-vim-for-javascript/
-Plugin 'jelera/vim-javascript-syntax'
-Plugin 'pangloss/vim-javascript'
-Plugin 'nathanaelkane/vim-indent-guides'
-Plugin 'marijnh/tern_for_vim'
+NeoBundle 'jelera/vim-javascript-syntax'
+NeoBundle 'pangloss/vim-javascript'
+NeoBundle 'othree/javascript-libraries-syntax.vim'
+
+NeoBundle 'nathanaelkane/vim-indent-guides'
+NeoBundle 'marijnh/tern_for_vim'
 "CoffeeScript
-Plugin 'kchmck/vim-coffee-script'
+NeoBundle 'kchmck/vim-coffee-script'
+NeoBundle 'lukaszkorecki/CoffeeTags'
 "TypeScript
-Plugin 'leafgarland/typescript-vim'
+NeoBundle 'leafgarland/typescript-vim'
 "TypeScript & Javascript
-Plugin 'jason0x43/vim-js-indent' 
+NeoBundle 'jason0x43/vim-js-indent' 
 "CSS related
-Plugin 'tpope/vim-haml'
-Plugin 'groenewege/vim-less'
-Plugin 'hail2u/vim-css3-syntax'
-Plugin 'skammer/vim-css-color'
+NeoBundle 'tpope/vim-haml'
+NeoBundle 'groenewege/vim-less'
+NeoBundle 'hail2u/vim-css3-syntax'
+NeoBundle 'lilydjwg/colorizer'
+call neobundle#end()
 
-call vundle#end()            " required"
+" Required:
+filetype plugin indent on
 
-"Add default YCM C++ Completion file & whitelist it
-let g:ycm_global_ycm_extra_conf = '~/.YCM/.ycm_extra_conf.py'
-let g:ycm_extra_conf_globlist = ['~/.YCM/*','!~/*']
-" make YCM compatible with UltiSnips (using supertab)
-let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
-let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
-let g:SuperTabDefaultCompletionType = '<C-n>'
-" better key bindings for UltiSnipsExpandTrigger
-let g:UltiSnipsExpandTrigger = "<tab>"
-let g:UltiSnipsJumpForwardTrigger = "<tab>"
-let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
-
-"leader to execute ruby
-noremap <leader>rx :!ruby %<CR>
 "Airline Powerline fonts
 let g:airline_powerline_fonts = 1
 "Remap leader to comma
 let mapleader = ","
 "ColorScheme
 colorscheme kolor
+set background=dark
 set t_Co=256
 set guifont=DejaVu\ Sans\ Mono:12
 "Not Suck Tips
@@ -98,40 +132,159 @@ set hlsearch
 "Set Indentation
 set expandtab
 set autoindent
-"Remap leader key to Comma
-let mapleader=","
-"ESFormatter for JS
-vnoremap <silent> <leader>es :! esformatter<CR>
-noremap <silent> <leader>e :%!esformatter<CR>
-"Detect filetypes and load indents
-set filetype=on
-filetype plugin on
-filetype indent on
+syntax on
+" If there are uninstalled bundles found on startup,
+" this will conveniently prompt you to install them.
+NeoBundleCheck
+
+"Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
+" Disable AutoComplPop.
+let g:acp_enableAtStartup = 0
+" Use neocomplcache.
+let g:neocomplete#enable_at_startup = 1
+" Use smartcase.
+let g:neocomplete#enable_smart_case = 1
+" Set minimum syntax keyword length.
+let g:neocomplete#min#min_keyword_length = 3
+let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+
+" Enable heavy features.
+" Use camel case completion.
+let g:neocomplete#enable_camel_case_completion = 1
+" Use underbar completion.
+"let g:neocomplcache_enable_underbar_completion = 1
+
+" Define dictionary.
+let g:neocomplete#source#dictionary#dictionaries = {
+                        \ 'default' : '',
+                        \ 'vimshell' : $HOME.'/.vimshell_hist',
+                        \ 'scheme' : $HOME.'/.gosh_completions'
+                        \ }
+
+" Define keyword.
+if !exists('g:neocomplete#keyword_patterns')
+        let g:neocomplete#keyword_patterns = {}
+endif
+let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+" NeoBundle key-mappings.
+inoremap <expr><C-g>     neocomplete#undo_completion()
+inoremap <expr><C-l>     neocomplete#complete_common_string()
+
+" Recommended key-mappings.
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+        return pumvisible() ? neocomplete#close_popup() : "\<CR>" 
+endfunction
+
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr><S-TAB> pumvisible () ? "\<C-p>" : "\<S-TAB>"
+" <C-h>, <BS>: close popup and delete backword char.
+inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><C-y>  neocomplete#close_popup()
+inoremap <expr><C-e>  neocomplete#cancel_popup()
+" Close popup by <Space>.
+"inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() : "\<Space>"
+
+" Plugin key-mappings.
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+
+" SuperTab like snippets behavior.
+imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)"
+\: pumvisible() ? "\<C-n>" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)"
+\: "\<TAB>"
+
+" For snippet_complete marker.
+if has('conceal')
+  set conceallevel=2 concealcursor=i
+endif
+
+" Enable omni completion.
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+
+" Enable heavy omni completion.
+if !exists('g:neocomple#sources#omni#input_patterns')
+        let g:neocomplete#sources#omni#input_patterns = {}
+endif
+let g:neocomplete#sources#omni#input_patterns.php = '[^.     ]->\h\w*\|\h\w*::'
+let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *	]\%(\.\|->\)'
+let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *	]\%(\.\|->\)\|\h\w*::'
+
+" For perlomni.vim setting.
+" https://github.com/c9s/perlomni.vim
+let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+
+" Enable snipMate compatibility feature.
+let g:neosnippet#enable_snipmate_compatibility = 1
+"
+" Tell Neosnippet about the other snippets
+let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
+
+map <leader>n :NERDTreeToggle<CR>
+map <Leader>t :TagbarToggle<CR>
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif 
+
+"https://github.com/HansCz/dotfiles-vim/blob/master/keybindings.vim
+"vimdiff current vs git head (fugitive extension)
+nnoremap <Leader>gd :Gdiff<cr>
+"switch back to current file and closes fugitive buffer
+nnoremap <Leader>gD :diffoff!<cr><c-w>h:bd<cr>
+" git stuff
+nnoremap <leader>gdc :Git diff --cached<CR>
+nnoremap <leader>gc :Gcommit<CR>
+nnoremap <leader>gst :Gstatus<CR>
+
+"Tab management (http://blog.chrisbe.st/articles/coding/two-years-of-vim)
+nnoremap <C-t> :tabnew<CR>
+nnoremap <C-b> :tabprevious<CR>
+nnoremap <C-n> :tabnext<CR>
+inoremap <C-t> <Esc>:tabnew<CR>
+inoremap <C-b> <Esc>:tabprevious<CR>i
+inoremap <C-n> <Esc>:tabnext<CR>i
+
+"Fuck colon, aquire semicolon
+nnoremap ; :
+
 set bs=indent,eol,start     " Backspace over everything in insert mode"
 "Tab defaults
 set ai
-set sw=2
-set ts=2
-set sts=2
-set et
+set sw=2 "Shift width, >>"
+set ts=2 "Tab stop"
+set sts=2 "Soft Tab Stop"
+set et "expand tabs"
 set textwidth=79
+
 " Mark down file type
 au BufRead,BufNewFile *.md set filetype=markdown
 " HTML (tab width 2 chr, no wrapping)
 autocmd FileType html set textwidth=0
-autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+"C & C++
+autocmd FileType c set cindent
+autocmd FileType c set ts=4
+autocmd FileType c set sts=4
+autocmd FileType c set sw=4
+
 " Python (tab width 4 chr, wrap at 79th char)
 autocmd FileType python set sw=4
 autocmd FileType python set ts=4
 autocmd FileType python set sts=4
 let g:pymode_rope_completion = 0
 let g:pymode_rope_complete_on_dot = 0
-"autocmd FileType python set omnifunc=pythoncomplete#Complete
-
-"CSS (tab width 2 chr, wrap at 79th char)
-autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-"JavaScript (tab width 2 chr, wrap at 79th)
-autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
 "Haskell Tab specific option via (http://www.haskell.org/haskellwiki/Vim)
 autocmd FileType haskell set tabstop=8 "A tab is 8 spaces
 autocmd FileType haskell set expandtab "Always uses spaces instead of tabs
@@ -144,8 +297,3 @@ autocmd FileType haskell set nojoinspaces "Don't convert spaces to tabs
 au Bufenter *.hs compiler hlint
 let g:haddock_browser = "/usr/bin/firefox"
 let g:ghc = "/usr/bin/ghc"
-let g:ycm_semantic_triggers = {'haskell' : ['.']}
-"YouCompleteMe + Eclim integration?
-let g:EclimCompletionMethod = 'omnifunc'
-
-syntax on
