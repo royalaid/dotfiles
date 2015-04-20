@@ -47,7 +47,6 @@ call neobundle#config('neosnippet', {
 " NeoBundle 'git@github.com:Shougo/neocomplcache-snippets-complete.git'
 NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'honza/vim-snippets'
-NeoBundle 'othree/javascript-libraries-syntax.vim'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'Shougo/neobundle-vim-scripts'
 NeoBundle 'Shougo/unite.vim',
@@ -71,39 +70,68 @@ NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'majutsushi/tagbar'
 NeoBundle 'Raimondi/delimitMate'
+NeoBundle 'christoomey/vim-tmux-navigator'
 
 "Ctags stuff and related
 NeoBundle 'xolox/vim-easytags'
+
 "Ruby
-NeoBundle 'vim-ruby/vim-ruby'
+NeoBundleLazy 'vim-ruby/vim-ruby'
+autocmd FileType ruby NeoBundleSource vim-ruby
+
+"Nim
+NeoBundleLazy 'zah/nimrod.vim'
+autocmd FileType nim NeoBundleSource nimrod.vim
+
 "Python
 NeoBundle 'klen/python-mode'
 NeoBundle 'nvie/vim-pyunit'
+autocmd FileType python NeoBundleSource python-mode
+autocmd FileType python NeoBundleSource vim-pyunit
+
 "C & C++
 NeoBundle 'vim-scripts/c.vim'
+autocmd FileType c,cpp NeoBundleSource c.vim
+
 "WebDevStuff
 "HTML5
 NeoBundle 'othree/html5.vim'
+autocmd FileType html NeoBundleSource html5.vim
+
 "Vim JavaScript page recommends
 "http://oli.me.uk/2013/06/29/equipping-vim-for-javascript/
-NeoBundle 'jelera/vim-javascript-syntax'
-NeoBundle 'pangloss/vim-javascript'
-NeoBundle 'othree/javascript-libraries-syntax.vim'
+NeoBundleLazy 'jelera/vim-javascript-syntax'
+NeoBundleLazy 'pangloss/vim-javascript'
+NeoBundleLazy 'othree/javascript-libraries-syntax.vim'
+NeoBundleLazy 'marijnh/tern_for_vim'
+autocmd FileType javascript NeoBundleSource javascript-libraries-syntax
+autocmd FileType javascript NeoBundleSource vim-javascript-syntax
+autocmd FileType javascript NeoBundleSource vim-javascript
+autocmd FileType javascript NeoBundleSource tern_for_vim
 
-NeoBundle 'nathanaelkane/vim-indent-guides'
-NeoBundle 'marijnh/tern_for_vim'
 "CoffeeScript
 NeoBundle 'kchmck/vim-coffee-script'
 NeoBundle 'lukaszkorecki/CoffeeTags'
+autocmd FileType coffee NeoBundleSource vim-coffee-script
+autocmd FileType coffee NeoBundleSource CoffeeTags 
+
 "TypeScript
 NeoBundle 'leafgarland/typescript-vim'
+autocmd FileType typescript NeoBundleSource typescript-vim
+
 "TypeScript & Javascript
-NeoBundle 'jason0x43/vim-js-indent' 
+NeoBundle 'jason0x43/vim-js-indent'
+autocmd FileType typescript, javascript NeoBundleSource vim-js-indent
+
 "CSS related
 NeoBundle 'tpope/vim-haml'
+autocmd FileType haml NeoBundleSource vim-haml
 NeoBundle 'groenewege/vim-less'
+autocmd FileType less NeoBundleSource vim-less
 NeoBundle 'hail2u/vim-css3-syntax'
+autocmd FileType css NeoBundleSource vim-css3-syntax
 NeoBundle 'lilydjwg/colorizer'
+autocmd FileType css NeoBundleSource colorizer
 call neobundle#end()
 
 " Required:
@@ -113,8 +141,7 @@ filetype plugin indent on
 let g:airline_powerline_fonts = 1
 "Remap leader to comma
 let mapleader = ","
-"ColorScheme
-colorscheme kolor
+colorscheme Tomorrow-Night-Eighties
 set background=dark
 set t_Co=256
 set guifont=DejaVu\ Sans\ Mono:12
@@ -238,6 +265,15 @@ map <Leader>t :TagbarToggle<CR>
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif 
+" Send more characters for redraws
+set ttyfast
+
+" Enable mouse use in all modes
+set mouse=a
+
+" Set this to the name of your terminal that supports mouse codes.
+" Must be one of: xterm, xterm2, netterm, dec, jsbterm, pterm
+set ttymouse=xterm2
 
 "https://github.com/HansCz/dotfiles-vim/blob/master/keybindings.vim
 "vimdiff current vs git head (fugitive extension)

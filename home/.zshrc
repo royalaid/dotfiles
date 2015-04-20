@@ -55,6 +55,8 @@ alias tmux="tmux -2"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 plugins=(git)
+source "$HOME/.homesick/repos/homeshick/homeshick.sh"
+fpath=($HOME/.homesick/repos/homeshick/completions $fpath)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -137,4 +139,4 @@ function gitall(){
   done
 }
 
-fpath=($HOME/.homesick/repos/homeshick/completions $fpath)
+export PATH="$PATH:$HOME/Apps/Nim/bin"
