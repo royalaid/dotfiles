@@ -93,6 +93,17 @@ autocmd FileType python NeoBundleSource vim-pyunit
 NeoBundle 'vim-scripts/c.vim'
 autocmd FileType c,cpp NeoBundleSource c.vim
 
+"Rust
+NeoBundleLazy 'rust-lang/rust.vim'
+NeoBundleLazy 'phildawes/racer', {
+      \   'build' : {
+      \     'mac': 'cargo build --release',
+      \     'unix': 'cargo build --release',
+      \   }
+      \ }
+autocmd FileType rs NeoBundleSource rust.vim
+autocmd FileType rs NeoBundleSource racer
+
 "WebDevStuff
 "HTML5
 NeoBundle 'othree/html5.vim'
@@ -110,27 +121,27 @@ autocmd FileType javascript NeoBundleSource vim-javascript
 autocmd FileType javascript NeoBundleSource tern_for_vim
 
 "CoffeeScript
-NeoBundle 'kchmck/vim-coffee-script'
-NeoBundle 'lukaszkorecki/CoffeeTags'
+NeoBundleLazy 'kchmck/vim-coffee-script'
+NeoBundleLazy 'lukaszkorecki/CoffeeTags'
 autocmd FileType coffee NeoBundleSource vim-coffee-script
 autocmd FileType coffee NeoBundleSource CoffeeTags 
 
 "TypeScript
-NeoBundle 'leafgarland/typescript-vim'
+NeoBundleLazy 'leafgarland/typescript-vim'
 autocmd FileType typescript NeoBundleSource typescript-vim
 
 "TypeScript & Javascript
-NeoBundle 'jason0x43/vim-js-indent'
+NeoBundleLazy 'jason0x43/vim-js-indent'
 autocmd FileType typescript, javascript NeoBundleSource vim-js-indent
 
 "CSS related
-NeoBundle 'tpope/vim-haml'
+NeoBundleLazy 'tpope/vim-haml'
 autocmd FileType haml NeoBundleSource vim-haml
-NeoBundle 'groenewege/vim-less'
+NeoBundleLazy 'groenewege/vim-less'
 autocmd FileType less NeoBundleSource vim-less
-NeoBundle 'hail2u/vim-css3-syntax'
+NeoBundleLazy 'hail2u/vim-css3-syntax'
 autocmd FileType css NeoBundleSource vim-css3-syntax
-NeoBundle 'lilydjwg/colorizer'
+NeoBundleLazy 'lilydjwg/colorizer'
 autocmd FileType css NeoBundleSource colorizer
 call neobundle#end()
 
