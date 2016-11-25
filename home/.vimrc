@@ -37,6 +37,8 @@ call neobundle#config('neocomplete', {
                         \   'insert' : 1,
                         \ }})
 
+NeoBundle 'Shougo/deoplete.nvim'
+
 NeoBundle 'Shougo/neosnippet'
 call neobundle#config('neosnippet', {
                         \ 'lazy' : 1,
@@ -48,6 +50,7 @@ call neobundle#config('neosnippet', {
 NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'honza/vim-snippets'
 NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'tpope/vim-dispatch'
 NeoBundle 'Shougo/neobundle-vim-scripts'
 NeoBundle 'Shougo/unite.vim',
 call neobundle#config('unite.vim',{
@@ -94,15 +97,69 @@ NeoBundle 'vim-scripts/c.vim'
 autocmd FileType c,cpp NeoBundleSource c.vim
 
 "Rust
-NeoBundleLazy 'rust-lang/rust.vim'
-NeoBundleLazy 'phildawes/racer', {
+NeoBundle 'rust-lang/rust.vim'
+NeoBundle 'phildawes/racer', {
       \   'build' : {
       \     'mac': 'cargo build --release',
       \     'unix': 'cargo build --release',
       \   }
       \ }
-autocmd FileType rs NeoBundleSource rust.vim
-autocmd FileType rs NeoBundleSource racer
+
+"Clojure
+NeoBundleLazy 'guns/vim-sexp' , {
+          \ 'autoload': {
+          \   'filetypes': 'clojure',
+          \ },
+          \ }
+NeoBundleLazy 'tpope/vim-sexp-mappings-for-regular-people', {
+          \ 'autoload': {
+          \   'filetypes': 'clojure',
+          \ },
+          \ 'depends': [
+          \   'guns/vim-sexp',
+          \ ],
+          \ }
+NeoBundleLazy 'guns/vim-clojure-static', {
+          \ 'autoload': {
+          \   'filetypes': 'clojure',
+          \ },
+          \ }
+NeoBundleLazy 'tpope/vim-fireplace', {
+          \ 'autoload': {
+          \   'filetypes': 'clojure',
+          \ },
+          \ }
+NeoBundleLazy 'tpope/vim-salve', {
+          \ 'autoload': {
+          \   'filetypes': 'clojure',
+          \ },
+          \ }
+NeoBundleLazy 'venantius/vim-cljfmt', {
+          \ 'autoload': {
+          \   'filetypes': 'clojure',
+          \ },
+          \ 'depends': [
+          \   'tpope/vim-fireplace',
+          \ ],
+          \ }
+NeoBundleLazy 'guns/vim-clojure-highlight', {
+          \ 'autoload': {
+          \   'filetypes': 'clojure',
+          \ },
+          \ 'depends': [
+          \   'tpope/vim-fireplace',
+          \   'guns/vim-clojure-static'
+          \ ],
+          \ }
+NeoBundleLazy 'junegunn/rainbow_parentheses.vim', {
+          \ 'autoload': {
+          \   'filetypes': 'clojure',
+          \ },
+          \ }
+
+
+"Go
+NeoBundle 'fatih/vim-go' 
 
 "WebDevStuff
 "HTML5
@@ -155,7 +212,7 @@ let mapleader = ","
 colorscheme Tomorrow-Night-Eighties
 set background=dark
 set t_Co=256
-set guifont=DejaVu\ Sans\ Mono:12
+set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:12
 "Not Suck Tips
 set laststatus=2 
 set ruler 
@@ -171,6 +228,10 @@ set hlsearch
 set expandtab
 set autoindent
 syntax on
+
+" format with goimports instead of gofmt
+let g:go_fmt_command = "goimports" 
+
 " If there are uninstalled bundles found on startup,
 " this will conveniently prompt you to install them.
 NeoBundleCheck
@@ -233,12 +294,14 @@ smap <C-k>     <Plug>(neosnippet_expand_or_jump)
 xmap <C-k>     <Plug>(neosnippet_expand_target)
 
 " SuperTab like snippets behavior.
-imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)"
-\: pumvisible() ? "\<C-n>" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)"
-\: "\<TAB>"
+" imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+" \ "\<Plug>(neosnippet_expand_or_jump)"
+" \: pumvisible() ? "\<C-n>" : "\<TAB>"
+" smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+"\ "\<Plug>(neosnippet_expand_or_jump)"
+"\: "\<TAB>"
+" AutoComplPop like behavior.
+let g:neocomplete#enable_auto_select = 1
 
 " For snippet_complete marker.
 if has('conceal')
@@ -276,6 +339,7 @@ map <Leader>t :TagbarToggle<CR>
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif 
+
 " Send more characters for redraws
 set ttyfast
 
@@ -291,6 +355,7 @@ set ttymouse=xterm2
 nnoremap <Leader>gd :Gdiff<cr>
 "switch back to current file and closes fugitive buffer
 nnoremap <Leader>gD :diffoff!<cr><c-w>h:bd<cr>
+
 " git stuff
 nnoremap <leader>gdc :Git diff --cached<CR>
 nnoremap <leader>gc :Gcommit<CR>
@@ -306,8 +371,10 @@ inoremap <C-n> <Esc>:tabnext<CR>i
 
 "Fuck colon, aquire semicolon
 nnoremap ; :
+"
+"Backspace over everything in insert mode
+set bs=indent,eol,start     
 
-set bs=indent,eol,start     " Backspace over everything in insert mode"
 "Tab defaults
 set ai
 set sw=2 "Shift width, >>"
@@ -326,12 +393,16 @@ autocmd FileType c set ts=4
 autocmd FileType c set sts=4
 autocmd FileType c set sw=4
 
+"Crontab fix
+autocmd filetype crontab setlocal nobackup nowritebackup
+
 " Python (tab width 4 chr, wrap at 79th char)
 autocmd FileType python set sw=4
 autocmd FileType python set ts=4
 autocmd FileType python set sts=4
 let g:pymode_rope_completion = 0
 let g:pymode_rope_complete_on_dot = 0
+
 "Haskell Tab specific option via (http://www.haskell.org/haskellwiki/Vim)
 autocmd FileType haskell set tabstop=8 "A tab is 8 spaces
 autocmd FileType haskell set expandtab "Always uses spaces instead of tabs
@@ -344,3 +415,10 @@ autocmd FileType haskell set nojoinspaces "Don't convert spaces to tabs
 au Bufenter *.hs compiler hlint
 let g:haddock_browser = "/usr/bin/firefox"
 let g:ghc = "/usr/bin/ghc"
+
+"Clojure
+"Rainbow
+augroup rainbow_lisp
+  autocmd!
+  autocmd FileType lisp,clojure,scheme RainbowParentheses
+augroup END
