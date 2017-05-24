@@ -10,7 +10,7 @@ export PATH=$JAVA_HOME/bin:$PATH
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="dogenpunk"
+ZSH_THEME="ys"
 
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
@@ -73,7 +73,7 @@ HISTFILESIZE=200000
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(docker git brew jsontools osx rvm fasd lolcat mvn vagrant mercurial)
+plugins=(docker git brew jsontools osx rvm fasd lolcat mvn vagrant mercurial cargo rust)
 source "$HOME/.homesick/repos/homeshick/homeshick.sh"
 fpath=($HOME/.homesick/repos/homeshick/completions $fpath)
 
