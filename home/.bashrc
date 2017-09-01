@@ -101,3 +101,5 @@ export NVM_DIR="~/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
 export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/lib
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash

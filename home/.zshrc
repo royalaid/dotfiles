@@ -16,19 +16,52 @@ ZSH_THEME="ys"
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias ftb="nohup java -jar ~/Apps/launcher^FTB_Launcher.jar > /dev/null &"
+alias lc='colorls -r'
 alias tmux="tmux -2"
+
+#Used at the end when launching GUI programs from the shell (e.g. `gimp image.jpg @`).
+#It pipes both stdout and stderr to logger (which ends up in systemd's
+#journal) so it doesn't clutter the terminal and disowns the job so it doesn't
+#get killed when you exit the shell. It also has the nice property of looking
+#symmetric. 
+#via https://www.reddit.com/r/programming/comments/6itu98/hints_for_writing_unix_tools/dj9ckoa/
+alias -g @='|& logger &|'
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
   alias htop="sudo htop"
   alias eclimd="/Applications/eclipse_mars/Eclipse.app/Contents/Eclipse/eclimd"
   alias eclim="/Applications/eclipse_mars/Eclipse.app/Contents/Eclipse/eclim"
   export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home"
-  
+  export PATH="$HOME/Library/Haskell/bin:$PATH" 
 fi
 
 if hash ag 2>/dev/null; then
     alias ag='ag --pager="less -XFR"'
 fi
+
+alias xa="exa -abghl --git --color=automatic"
+
+# === fzf ===
+
+if [[ ! "$PATH" == */usr/local/opt/fzf/bin* ]]; then
+  export PATH="$PATH:/usr/local/opt/fzf/bin"
+fi
+
+# Auto-completion
+[[ $- == *i* ]] && source "/usr/local/opt/fzf/shell/completion.zsh" 2> /dev/null
+
+# Key bindings
+source "/usr/local/opt/fzf/shell/key-bindings.zsh"
+
+# Setting ag as the default source for fzf
+export FZF_DEFAULT_COMMAND='ag -g ""'
+
+# To apply the command to CTRL-T as well
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+_fzf_compgen_path() {
+  ag -g "" "$1"
+}
 
 #VirtualEnvWrapper
 export WORKON_HOME="$HOME/.virtualenvs"
@@ -73,7 +106,16 @@ HISTFILESIZE=200000
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(docker git brew jsontools osx rvm fasd lolcat mvn vagrant mercurial cargo rust)
+# Setup requires running
+# ```
+# git clone git://github.com/zsh-users/zsh-autosuggestions
+# $ZSH_CUSTOM/plugins/zsh-autosuggestions
+# ```
+# and
+# ```
+# git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+# ```
+plugins=(docker git brew jsontools osx rvm fasd lolcat mvn vagrant mercurial cargo rust zsh-autosuggestions zsh-syntax-highlighting)
 source "$HOME/.homesick/repos/homeshick/homeshick.sh"
 fpath=($HOME/.homesick/repos/homeshick/completions $fpath)
 
@@ -163,3 +205,5 @@ function gitall(){
 export PATH="$PATH:$HOME/Apps/Nim/bin"
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
