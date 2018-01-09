@@ -31,7 +31,6 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   alias htop="sudo htop"
   alias eclimd="/Applications/eclipse_mars/Eclipse.app/Contents/Eclipse/eclimd"
   alias eclim="/Applications/eclipse_mars/Eclipse.app/Contents/Eclipse/eclim"
-  export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home"
   export PATH="$HOME/Library/Haskell/bin:$PATH" 
 fi
 
