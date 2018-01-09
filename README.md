@@ -3,9 +3,9 @@
 
 
 
-My Dotfiles
+#My Dotfiles
 
-To Install:
+##To Install:
 
 1. Change Shell to Zsh:
 
@@ -16,69 +16,52 @@ To Install:
 2. Configure Vim and setup dotfiles links
 
    ```
+   cd ~
    curl -L http://install.ohmyz.sh | sh
+   
+   # if on linux
    git clone git://github.com/andsens/homeshick.git $HOME/.homesick/repos/homeshick
    printf '\nsource "$HOME/.homesick/repos/homeshick/homeshick.sh"' >> $HOME/.bashrc
+
+   # if on mac
+   brew install homeshick
+
    source ~/.zshrc
-   git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+
    homeshick clone royalaid/dotfiles
    homeshick link dotfiles
-   vim +BundleInstall +qall
-   ```
-   
-3. [Compile YCM](https://valloric.github.io/YouCompleteMe/)
-   
-   ```
-   cd ~/.vim/bundle/YouCompleteMe
-   ./install.sh --clang-completer
-   cd - #Get back to where you were
-   ```
 
-4. (optional) [Compile Command-t](https://github.com/wincent/Command-T)
+   cd /tmp
+   curl https://raw.githubusercontent.com/Shougo/neobundle.vim/master/bin/install.sh > install.sh
+   sh ./install.sh
+   cd ~
+   ``` 
+3. Install nvm `curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | bash` 
 
-   ```
-   sudo apt-get install ruby ruby-dev
-   cd ~/.vim/bundle/command-t/ruby/command-t
-   ruby extconf.rb
-   make
-   ```
+4. Install fasd `brew install fasd`
 
-5. (optional) Setup [Hlint](https://github.com/dag/vim2hs#hlint) & [ghc-mod](https://github.com/eagletmt/neco-ghc#install) for Haskell
+5. Install fzf `brew install fzf`
 
-   ```
-   sudo apt-get install haskell-platform
-   cabal update
-   ```
-   
-   `cabal install ghc-mod` (you may have to add `--force-reinstalls` for it to work
-   
-   `sudo apt-get install hlint`
-   
-6. (optional) Setup [Tern for Vim](https://github.com/marijnh/tern_for_vim)
+6. Install exa `brew install exa`
+    * Can be used via the `xa` alias
 
-   `curl -sL https://deb.nodesource.com/setup | sudo bash -` (latest) 
-   
-   or
-   
-   `sudo apt-get install nodejs npm` (easy)
-   
-   As per the Tern For Vim instructions:
-
-   "**Caution:** Because the node process is not run using your standard shell, the NVM version of node.js won't work. You need a global node executable."
-
-   ```
-   cd ~/.vim/bundle/tern_for_vim
-   npm install
-   ```
-   
-7. (optional) Web Dev Stuff
-   
-   ```
-   npm install -g typescript
-   npm install -g coffee-script
-   npm install -g coffeelint
-   npm install -g less
-   sudo gem install sass
-   ```
+7. Install Ripgrep `brew install ripgrep` 
 
 8. (Optional) [Install Powerline fonts](https://powerline.readthedocs.org/en/latest/installation/linux.html#font-installation)
+    * Set the powerline fonts to be used by your terminal emulator
+
+##Errata:
+
+In order to setup macvim a few extra steps are required.
+
+1. Install Xcode from the app store
+
+2. Open Xcode, it will propmt you to install extras, this is required for
+   macvim to compile
+
+3. Run the below commands to configure MacVim
+   ```
+   xcode-select --install
+   sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer
+   ```
+4. Finally `brew install macvim --with-override-system-vim`
