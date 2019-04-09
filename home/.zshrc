@@ -6,12 +6,17 @@ export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:$GOROOT/bin
 export PATH=$JAVA_HOME/bin:$PATH
 
+export EDITOR="nvim"
+
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="ys"
-
+ZSH_THEME="spaceship"
+SPACESHIP_TIME_SHOW=true
+SPACESHIP_TIME_12HR=true
+SPACESHIP_HOST_SHOW="always"
+SPACESHIP_HOST_SHOW_FULL=true
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
@@ -39,28 +44,6 @@ if hash ag 2>/dev/null; then
 fi
 
 alias xa="exa -abghl --git --color=automatic"
-
-# === fzf ===
-
-if [[ ! "$PATH" == */usr/local/opt/fzf/bin* ]]; then
-  export PATH="$PATH:/usr/local/opt/fzf/bin"
-fi
-
-# Auto-completion
-[[ $- == *i* ]] && source "/usr/local/opt/fzf/shell/completion.zsh" 2> /dev/null
-
-# Key bindings
-source "/usr/local/opt/fzf/shell/key-bindings.zsh"
-
-# Setting ag as the default source for fzf
-export FZF_DEFAULT_COMMAND='ag -g ""'
-
-# To apply the command to CTRL-T as well
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-
-_fzf_compgen_path() {
-  ag -g "" "$1"
-}
 
 #VirtualEnvWrapper
 export WORKON_HOME="$HOME/.virtualenvs"
@@ -114,15 +97,14 @@ HISTFILESIZE=200000
 # ```
 # git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 # ```
-plugins=(docker git brew jsontools osx rvm fasd lolcat mvn vagrant mercurial cargo rust zsh-autosuggestions zsh-syntax-highlighting)
-source "$HOME/.homesick/repos/homeshick/homeshick.sh"
+plugins=(docker git brew osx fasd lolcat zsh-autosuggestions zsh-syntax-highlighting)
 fpath=($HOME/.homesick/repos/homeshick/completions $fpath)
 
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-export PATH="$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/royalaid/Apps/WebStorm-135.1063"
+export PATH="$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
@@ -192,18 +174,6 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
   alias cbhs="cat $HISTFILE | tail -n 1 | cb"  
 fi
 
-
-#Grab all repo branches after fresh clone
-#from https://coderwall.com/p/0ypmka
-function gitall(){
-  for branch in `git branch -a | grep remotes | grep -v HEAD | grep -v master `; do
-    git branch --track ${branch#remotes/origin/} $branch
-  done
-}
-
-export PATH="$PATH:$HOME/Apps/Nim/bin"
-
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
