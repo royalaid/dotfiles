@@ -70,6 +70,7 @@ jq
 npm
 python
 python3
+ripgrep
 ssh-copy-id
 terminal-notifier
 the_silver_searcher
