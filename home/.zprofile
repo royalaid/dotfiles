@@ -4,6 +4,11 @@
 PATH="/Library/Frameworks/Python.framework/Versions/3.4/bin:${PATH}"
 export PATH
 
+if [ -f /etc/profile ]; then
+	PATH=""
+	source /etc/profile
+fi
+
 if [[ `uname` == 'Darwin' ]]
 then
   export JAVA_HOME=$(/usr/libexec/java_home)
