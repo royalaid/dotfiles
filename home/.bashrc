@@ -108,3 +108,5 @@ export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/lib
 #Fix `homeshick cd` when using homeshick from brew, see https://github.com/andsens/homeshick/issues/177
 export HOMESHICK_DIR=/usr/local/opt/homeshick
 source "/usr/local/opt/homeshick/homeshick.sh"
+
+source /Users/royalaid/Library/Preferences/org.dystroy.broot/launcher/bash/br

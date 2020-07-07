@@ -57,6 +57,9 @@ if [ "$machine" == "Mac" ]; then
 	brew install bash
 fi
 
+#Install mcfly for better ctrl-r experience
+brew tap cantino/mcfly https://github.com/cantino/mcfly
+
 PACKAGES=(
 ack
 autoconf
@@ -78,6 +81,7 @@ imagemagick
 ispell
 jq
 leiningen
+mcfly
 mosh
 neovim
 nodejs

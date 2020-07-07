@@ -5,6 +5,7 @@ export RUST_SRC_PATH=~/.multirust/toolchains/stable-x86_64-apple-darwin/lib/rust
 export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:$GOROOT/bin
 export PATH=$JAVA_HOME/bin:$PATH
+export PATH=$PATH:/Users/royalaid/Documents/git/flutter/flutter/bin
 
 export EDITOR="nvim"
 
@@ -185,3 +186,10 @@ unalias grv
 #Fix `homeshick cd` when using homeshick from brew, see https://github.com/andsens/homeshick/issues/177
 export HOMESHICK_DIR=/usr/local/opt/homeshick
 source "/usr/local/opt/homeshick/homeshick.sh"
+
+#Enable mcfly
+if [[ -r "$(brew --prefix)/opt/mcfly/mcfly.zsh" ]]; then
+  source "$(brew --prefix)/opt/mcfly/mcfly.zsh"
+fi
+
+source /Users/royalaid/Library/Preferences/org.dystroy.broot/launcher/bash/br
