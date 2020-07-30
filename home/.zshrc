@@ -24,6 +24,7 @@ SPACESHIP_HOST_SHOW_FULL=true
 alias ftb="nohup java -jar ~/Apps/launcher^FTB_Launcher.jar > /dev/null &"
 alias lc='colorls -r'
 alias tmux="tmux -2"
+alias bbk='rlwrap deps.clj -Scommand "bb -cp {{classpath}} {{main-opts}}"'
 
 #Used at the end when launching GUI programs from the shell (e.g. `gimp image.jpg @`).
 #It pipes both stdout and stderr to logger (which ends up in systemd's
@@ -98,7 +99,7 @@ HISTFILESIZE=200000
 # ```
 # git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 # ```
-plugins=(docker git brew osx fasd lolcat zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(docker git brew osx fasd zsh-autosuggestions zsh-syntax-highlighting)
 fpath=($HOME/.homesick/repos/homeshick/completions $fpath)
 
 source $ZSH/oh-my-zsh.sh
@@ -193,3 +194,8 @@ if [[ -r "$(brew --prefix)/opt/mcfly/mcfly.zsh" ]]; then
 fi
 
 source /Users/royalaid/Library/Preferences/org.dystroy.broot/launcher/bash/br
+
+if [ -f ~/.zsh/archconfig ]; then
+    source ~/.zsh/archconfig
+fi
+

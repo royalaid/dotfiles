@@ -70,7 +70,7 @@ borkdude/brew/clj-kondo
 broot
 clojure
 ctags
-diff-so-fancy
+git-delta
 exa
 fasd
 ffmpeg
@@ -83,6 +83,7 @@ jq
 leiningen
 mcfly
 mosh
+ncdu
 neovim
 nodejs
 npm
