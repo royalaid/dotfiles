@@ -189,9 +189,7 @@ export HOMESHICK_DIR=/usr/local/opt/homeshick
 source "/usr/local/opt/homeshick/homeshick.sh"
 
 #Enable mcfly
-if [[ -r "$(brew --prefix)/opt/mcfly/mcfly.zsh" ]]; then
-  source "$(brew --prefix)/opt/mcfly/mcfly.zsh"
-fi
+eval "$(mcfly init zsh)"
 
 source /Users/royalaid/Library/Preferences/org.dystroy.broot/launcher/bash/br
 
