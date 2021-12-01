@@ -99,7 +99,7 @@ HISTFILESIZE=200000
 # ```
 # git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 # ```
-plugins=(docker git brew osx fasd zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(docker git brew macos fasd zsh-autosuggestions zsh-syntax-highlighting)
 fpath=($HOME/.homesick/repos/homeshick/completions $fpath)
 
 source $ZSH/oh-my-zsh.sh
