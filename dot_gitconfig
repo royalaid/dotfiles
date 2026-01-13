@@ -1,9 +1,12 @@
 [user]
-  name = Mark Aiken 
-  email = gwmaiken@att.net
+	name = Royalaid
+	email = 2439803+royalaid@users.noreply.github.com
 
 [core]
   pager = delta
+	autocrlf = input
+	excludesfile = /Users/royalaid/.gitignore
+	editor = cursor --wait
 
 [interactive]
   diffFilter = delta --color-only

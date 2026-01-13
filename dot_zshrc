@@ -45,11 +45,12 @@ if hash ag 2>/dev/null; then
     alias ag='ag --pager="less -XFR"'
 fi
 
-alias xa="exa -abghl --git --color=automatic"
+alias xa="eza -abghl --icons --git --color=automatic"
+alias za="eza -ghl --icons --git"
 
 #VirtualEnvWrapper
 export WORKON_HOME="$HOME/.virtualenvs"
-source /usr/local/bin/virtualenvwrapper.sh
+#source /usr/local/bin/virtualenvwrapper.sh
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -186,14 +187,34 @@ unalias grv
 
 #Fix `homeshick cd` when using homeshick from brew, see https://github.com/andsens/homeshick/issues/177
 export HOMESHICK_DIR=/usr/local/opt/homeshick
-source "/usr/local/opt/homeshick/homeshick.sh"
+#source "/usr/local/opt/homeshick/homeshick.sh"
 
 #Enable mcfly
 eval "$(mcfly init zsh)"
 
-source /Users/royalaid/Library/Preferences/org.dystroy.broot/launcher/bash/br
+source $HOME/.cargo/env
 
 if [ -f ~/.zsh/archconfig ]; then
     source ~/.zsh/archconfig
 fi
 
+
+export PATH="$PATH:/Users/royalaid/.foundry/bin"
+
+# bun completions
+[ -s "/Users/royalaid/.bun/_bun" ] && source "/Users/royalaid/.bun/_bun"
+
+export NARGO_HOME="/Users/royalaid/.nargo"
+
+export PATH="$PATH:$NARGO_HOME/bin"
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#B0E0E6,dim"
+
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
+eval "$(pyenv init -)"
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/royalaid/.cache/lm-studio/bin"
+export PATH="/Users/royalaid/.local/bin:$PATH"
+export ANDROID_HOME=/Users/$USER/Library/Android/sdk

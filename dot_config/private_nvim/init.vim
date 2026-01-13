@@ -10,6 +10,7 @@ Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 Plug 'jiangmiao/auto-pairs'
 Plug 'elzr/vim-json'
+Plug 'tomlion/vim-solidity'
 call plug#end()
 
 colorscheme Tomorrow-Night-Eighties

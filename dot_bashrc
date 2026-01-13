@@ -110,3 +110,7 @@ export HOMESHICK_DIR=/usr/local/opt/homeshick
 source "/usr/local/opt/homeshick/homeshick.sh"
 
 source /Users/royalaid/Library/Preferences/org.dystroy.broot/launcher/bash/br
+. "$HOME/.cargo/env"
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/royalaid/.cache/lm-studio/bin"
