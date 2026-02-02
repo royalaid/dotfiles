@@ -78,6 +78,9 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 - Each function should have clear inputs and outputs
 - Minimize side effects and state mutations
 
+### Git Commits
+- Do not credit yourself in commit messages as a coauthor
+
 ### Typescript
 
 - **NEVER use `any` type** - always use proper TypeScript types
