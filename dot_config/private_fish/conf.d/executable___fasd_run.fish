@@ -15,5 +15,6 @@ function __fasd_run -e fish_postexec -d "fasd records the directories changed in
   set -lx RETVAL $status
   if test $RETVAL -eq 0 # if there was no error
     command fasd --proc (__fasd_expand_vars $argv) > "/dev/null" 2>&1 &
+    disown
   end
 end
