@@ -121,3 +121,6 @@ fish_add_path /Users/royalaid/.opencode/bin
 
 # Added by Antigravity
 fish_add_path /Users/royalaid/.antigravity/antigravity/bin
+
+# Brew updater
+alias brewup 'brew update && brew outdated --greedy && brew upgrade --greedy && brew cleanup'
