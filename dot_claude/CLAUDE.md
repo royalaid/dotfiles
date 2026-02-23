@@ -91,6 +91,15 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
   - e.g. use `lodash` for common operations
   - e.g. use viem utilities for Ethereum-specific types and operations
 
+### Etherscan / Contract Verification
+
+Etherscan V2 replaced chain-specific APIs (Basescan, Arbiscan, etc.) with a **single unified API key** from etherscan.io. One account + one key covers all 60+ supported chains via a `chainid` parameter.
+
+- Use `ETHERSCAN_API_KEY`, not `BASESCAN_API_KEY` / `ARBISCAN_API_KEY` etc.
+- Foundry: `--etherscan-api-key $ETHERSCAN_API_KEY` works for all chains.
+- **Paid-only chains** (no free-tier access): BNB Smart Chain, Base, OP Mainnet, Avalanche C-Chain (and their testnets). A free Etherscan key will fail verification on these.
+- V1 chain-specific APIs are deprecated. Always use the V2 unified endpoint.
+
 ## Tool Conventions
 
 ---------
