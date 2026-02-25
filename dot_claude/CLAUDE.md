@@ -111,4 +111,7 @@ Etherscan V2 replaced chain-specific APIs (Basescan, Arbiscan, etc.) with a **si
   - similar-looking but structurally different code
 - searching for code patterns
 - identifying refactoring opportunities
-- analyzing code structure -
+- analyzing code structure
+- **Prefer `jq` over `python -m json.tool`** for JSON processing in the shell
+  - `jq` is more concise, faster, and purpose-built for JSON
+  - Use `jq .` for pretty-printing, `jq '.field'` for extraction, etc.
