@@ -2,51 +2,16 @@
 
 ## Core Principles
 
----------
+### Git Commits
+- Do not credit yourself/Claude in commit messages as a coauthor
 
-### 1. Think Before Coding
+### Think Before Coding
 
-Don't assume. Don't hide confusion. Surface tradeoffs.
-
-Before implementing:
-
-- State your assumptions explicitly. If uncertain, ask.
-- If multiple interpretations exist, present them - don't pick silently.
+- If multiple interpretations exist, present them — don't pick silently.
 - If a simpler approach exists, say so. Push back when warranted.
-- If something is unclear, stop. Name what's confusing. Ask.
+- Before starting implementation, confirm the scope of what I'm asking for. If I say "fix X", fix X, don't also refactor Y.
 
-### 2. Simplicity First
-
-Minimum code that solves the problem. Nothing speculative.
-
-- No features beyond what was asked.
-- No abstractions for single-use code.
-- No "flexibility" or "configurability" that wasn't requested.
-- No error handling for impossible scenarios.
-- If you write 200 lines and it could be 50, rewrite it.
-- Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
-
-### 3. Surgical Changes
-
-Touch only what you must. Clean up only your own mess.
-
-When editing existing code:
-
-- Don't "improve" adjacent code, comments, or formatting.
-- Don't refactor things that aren't broken.
-- Match existing style, even if you'd do it differently.
-- If you notice unrelated dead code, mention it - don't delete it.
-
-When your changes create orphans:
-
-- Remove imports/variables/functions that YOUR changes made unused.
-- Don't remove pre-existing dead code unless asked.
-
-The test: Every changed line should trace directly to the user's request.
-
-### 4. Goal-Driven Execution
-
-Define success criteria. Loop until verified.
+### Goal-Driven Execution
 
 Transform tasks into verifiable goals:
 
@@ -62,56 +27,53 @@ For multi-step tasks, state a brief plan:
 3. [Step] → verify: [check]
 ```
 
-Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
+## Environment
+
+- This is a TypeScript-first monorepo ecosystem. Primary runtime is bun.
+- When running on remote servers via SSH/cron, use full paths to bun (e.g., `/home/user/.bun/bin/bun`) instead of relying on PATH.
+
+## Working Style
+
+- Ask me before exploring the codebase for addresses, keys, or configuration values — I likely have them ready to paste.
+
+## Git & Deployment
+
+- Common mappings: staging = develop, not beta.
+- Always verify with `git remote -v` and `git branch` before pushing.
 
 ## Code Conventions
 
----------
-
 ### General
 
-- **Write simple, functional code** that reads top-to-bottom
 - Prefer pure functions over classes
 - Functions should do one thing well
-- Avoid complex abstractions - keep it straightforward
-- Code should flow naturally from imports → helpers → main logic → execution
-- Each function should have clear inputs and outputs
+- Code should flow: imports → helpers → main logic → execution
 - Minimize side effects and state mutations
 
-### Git Commits
-- Do not credit yourself in commit messages as a coauthor
+### TypeScript
 
-### Typescript
-
-- **NEVER use `any` type** - always use proper TypeScript types
-- Use `unknown` when type is truly unknown and add type guards
-- Use type imports with `import type` for type-only imports
-- Leverage TypeScript's type inference where possible
-- Prefer using utilities from libraries over custom implementations
-  - e.g. use `lodash` for common operations
-  - e.g. use viem utilities for Ethereum-specific types and operations
+- **NEVER use `any` type** — use `unknown` with type guards when type is truly unknown
+- Use `import type` for type-only imports
+- Prefer library utilities over custom implementations (lodash, viem, etc.)
 
 ### Etherscan / Contract Verification
 
-Etherscan V2 replaced chain-specific APIs (Basescan, Arbiscan, etc.) with a **single unified API key** from etherscan.io. One account + one key covers all 60+ supported chains via a `chainid` parameter.
+Etherscan V2 replaced chain-specific APIs with a **single unified API key** from etherscan.io. One key covers all 60+ chains via a `chainid` parameter.
 
 - Use `ETHERSCAN_API_KEY`, not `BASESCAN_API_KEY` / `ARBISCAN_API_KEY` etc.
 - Foundry: `--etherscan-api-key $ETHERSCAN_API_KEY` works for all chains.
-- **Paid-only chains** (no free-tier access): BNB Smart Chain, Base, OP Mainnet, Avalanche C-Chain (and their testnets). A free Etherscan key will fail verification on these.
+- **Paid-only chains** (no free-tier access): BNB Smart Chain, Base, OP Mainnet, Avalanche C-Chain (and their testnets).
 - V1 chain-specific APIs are deprecated. Always use the V2 unified endpoint.
+
+### Block Explorer Scraping & Access
+
+**Never scrape block explorer HTML pages.** On-chain data is JS-rendered and won't appear in curl/fetch responses.
+
+- **Bot-blocked**: `arbiscan.io` (Cloudflare), `snowtrace.io` (CloudFront 403), `ftmscan.com` (empty)
+- **Not blocked but useless to scrape**: `etherscan.io`, `basescan.org`, `polygonscan.com` (data is JS-rendered)
+- **Takeaway**: Always use the Etherscan V2 unified API (`api.etherscan.io/v2/api?chainid=...`) with an API key.
 
 ## Tool Conventions
 
----------
-
-- **Prefer ast-grep over text-based search tools** (grep/ripgrep) when:
-- ast-grep understands syntax trees and matches code semantically affording:
-  - avoiding false positives from comments
-  - strings
-  - similar-looking but structurally different code
-- searching for code patterns
-- identifying refactoring opportunities
-- analyzing code structure
+- **Prefer ast-grep over text-based search** for structural/semantic code pattern matching (avoids false positives from comments, strings, structurally different code)
 - **Prefer `jq` over `python -m json.tool`** for JSON processing in the shell
-  - `jq` is more concise, faster, and purpose-built for JSON
-  - Use `jq .` for pretty-printing, `jq '.field'` for extraction, etc.
