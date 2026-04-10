@@ -11,6 +11,7 @@ set fish_greeting
 #set -gx PATH $PATH /Users/royalaid/Documents/git/flutter/flutter/bin
 
 set -gx EDITOR nvim
+set -gx CLAUDE_CODE_NO_FLICKER 1
 
 # === Darwin‐Specific Settings ===
 if test (uname) = Darwin
@@ -124,3 +125,13 @@ fish_add_path /Users/royalaid/.antigravity/antigravity/bin
 
 # Brew updater
 alias brewup 'brew update && brew outdated --greedy && brew upgrade --greedy && brew cleanup'
+
+# pnpm
+set -gx PNPM_HOME "/Users/royalaid/Library/pnpm"
+if not string match -q -- $PNPM_HOME $PATH
+  set -gx PATH "$PNPM_HOME" $PATH
+end
+# pnpm end
+
+# OpenClaw Completion
+source "/Users/royalaid/.openclaw/completions/openclaw.fish"
