@@ -32,6 +32,14 @@ For multi-step tasks, state a brief plan:
 - This is a TypeScript-first monorepo ecosystem. Primary runtime is bun.
 - When running on remote servers via SSH/cron, use full paths to bun (e.g., `/home/user/.bun/bin/bun`) instead of relying on PATH.
 
+## Bash Execution
+
+- For long-running commands: redirect to log file with `&> /tmp/cmd.log &` and proactively `tail -f` or `read` the log. Never block waiting on output.
+
+## Editing Conventions
+
+- Before bulk replacements, grep for all variants and confirm match list. Prefer explicit per-file edits over `replace_all` for non-trivial patterns.
+
 ## Working Style
 
 - Ask me before exploring the codebase for addresses, keys, or configuration values — I likely have them ready to paste.
@@ -40,6 +48,7 @@ For multi-step tasks, state a brief plan:
 
 - Common mappings: staging = develop, not beta.
 - Always verify with `git remote -v` and `git branch` before pushing.
+- Always run `date +%Y-%m-%d` before writing dates into commits, changelogs, or docs.
 
 ## Code Conventions
 
@@ -55,6 +64,10 @@ For multi-step tasks, state a brief plan:
 - **NEVER use `any` type** — use `unknown` with type guards when type is truly unknown
 - Use `import type` for type-only imports
 - Prefer library utilities over custom implementations (lodash, viem, etc.)
+
+### Solidity / Foundry
+
+- Verification troubleshooting order: (1) check EVM version, (2) byte-diff deployed vs local, (3) try Etherscan V2 verifier-url as universal fallback, (4) Sourcify as last resort.
 
 ### Etherscan / Contract Verification
 
