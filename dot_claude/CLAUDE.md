@@ -2,6 +2,11 @@
 
 ## Core Principles
 
+### Verification before claims
+- Never claim a fix is complete without running typecheck/build/tests and showing output.
+- For multi-variant edits (e.g., -C flags, multiple call sites), grep to enumerate ALL occurrences before using replace_all.
+- Verify branch/merge state (git status, git log, gh pr view) BEFORE starting implementation work.
+
 ### Git Commits
 - Do not credit yourself/Claude in commit messages as a coauthor
 
@@ -27,14 +32,49 @@ For multi-step tasks, state a brief plan:
 3. [Step] → verify: [check]
 ```
 
+## Code Search
+
+Use `semble search` to find code by describing what it does or naming a symbol/identifier, instead of grep:
+
+​```bash
+semble search "authentication flow" ./my-project
+semble search "save_pretrained" ./my-project
+semble search "save model to disk" ./my-project --top-k 10
+​```
+
+Use `semble find-related` to discover code similar to a known location (pass `file_path` and `line` from a prior search result):
+
+​```bash
+semble find-related src/auth.py 42 ./my-project
+​```
+
+`path` defaults to the current directory when omitted; git URLs are accepted.
+
+If `semble` is not on `$PATH`, use `uvx --from "semble[mcp]" semble` in its place.
+
+### Workflow
+
+1. Start with `semble search` to find relevant chunks.
+2. Inspect full files only when the returned chunk is not enough context.
+3. Optionally use `semble find-related` with a promising result's `file_path` and `line` to discover related implementations.
+4. Use grep only when you need exhaustive literal matches or quick confirmation of an exact string.
+
 ## Environment
 
 - This is a TypeScript-first monorepo ecosystem. Primary runtime is bun.
 - When running on remote servers via SSH/cron, use full paths to bun (e.g., `/home/user/.bun/bin/bun`) instead of relying on PATH.
 
+## Long-running commands
+
+- For commands that take >10s, redirect output to a log file (e.g., `command > /tmp/run.log 2>&1 &`) and proactively `tail`/`cat` the log to monitor progress. Do NOT wait silently — read the log.
+
+## macOS shell compatibility
+- Avoid GNU-only flags like `head -n -2`, `sed -i` (without backup arg), `date -d`. Use BSD-compatible alternatives or `gtail`/`gsed` via coreutils.
+
 ## Bash Execution
 
 - For long-running commands: redirect to log file with `&> /tmp/cmd.log &` and proactively `tail -f` or `read` the log. Never block waiting on output.
+
 
 ## Editing Conventions
 
@@ -88,5 +128,4 @@ Etherscan V2 replaced chain-specific APIs with a **single unified API key** from
 
 ## Tool Conventions
 
-- **Prefer ast-grep over text-based search** for structural/semantic code pattern matching (avoids false positives from comments, strings, structurally different code)
 - **Prefer `jq` over `python -m json.tool`** for JSON processing in the shell
