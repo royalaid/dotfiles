@@ -1,4 +1,5 @@
 {
+  "cleanupPeriodDays": 99999,
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
@@ -360,7 +361,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/notchi-hook.sh"
+            "command": "\"${CLAUDE_CONFIG_DIR:-$HOME/.claude}/hooks/notchi-hook.sh\""
           }
         ]
       }
@@ -391,7 +392,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/notchi-hook.sh"
+            "command": "\"${CLAUDE_CONFIG_DIR:-$HOME/.claude}/hooks/notchi-hook.sh\""
           }
         ]
       }
@@ -402,7 +403,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/notchi-hook.sh"
+            "command": "\"${CLAUDE_CONFIG_DIR:-$HOME/.claude}/hooks/notchi-hook.sh\""
           }
         ]
       },
@@ -411,7 +412,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/notchi-hook.sh"
+            "command": "\"${CLAUDE_CONFIG_DIR:-$HOME/.claude}/hooks/notchi-hook.sh\""
           }
         ]
       }
@@ -422,7 +423,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/notchi-hook.sh"
+            "command": "\"${CLAUDE_CONFIG_DIR:-$HOME/.claude}/hooks/notchi-hook.sh\""
           }
         ]
       }
@@ -432,7 +433,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/notchi-hook.sh"
+            "command": "\"${CLAUDE_CONFIG_DIR:-$HOME/.claude}/hooks/notchi-hook.sh\""
           }
         ]
       }
@@ -442,7 +443,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/notchi-hook.sh"
+            "command": "\"${CLAUDE_CONFIG_DIR:-$HOME/.claude}/hooks/notchi-hook.sh\""
           }
         ]
       },
@@ -469,7 +470,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/notchi-hook.sh"
+            "command": "\"${CLAUDE_CONFIG_DIR:-$HOME/.claude}/hooks/notchi-hook.sh\""
           }
         ]
       }
@@ -479,7 +480,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/notchi-hook.sh"
+            "command": "\"${CLAUDE_CONFIG_DIR:-$HOME/.claude}/hooks/notchi-hook.sh\""
           }
         ]
       }
@@ -489,7 +490,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/notchi-hook.sh"
+            "command": "\"${CLAUDE_CONFIG_DIR:-$HOME/.claude}/hooks/notchi-hook.sh\""
           }
         ]
       }
@@ -502,6 +503,8 @@
   },
   "enabledPlugins": {
     "building-secure-contracts@trailofbits": true,
+    "ce-architecture-scan@ce-architecture-scan": true,
+    "ce-codex-second-opinions@ce-codex-second-opinions": true,
     "claude-code-setup@claude-plugins-official": true,
     "claude-md-management@claude-plugins-official": true,
     "code-review@claude-plugins-official": true,
@@ -523,8 +526,8 @@
     "skill-creator@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,
     "vercel@claude-plugins-official": true,
-    "ce-codex-second-opinions@ce-codex-second-opinions": true,
-    "ce-architecture-scan@ce-architecture-scan": true
+    "ce-goal-forge@ce-goal-forge": true,
+    "ce-complexity-optimizer@ce-complexity-optimizer": true
   },
   "extraKnownMarketplaces": {
     "anthropic-agent-skills": {
@@ -533,6 +536,24 @@
         "repo": "anthropics/skills"
       },
       "autoUpdate": true
+    },
+    "ce-architecture-scan": {
+      "source": {
+        "source": "directory",
+        "path": "/Users/royalaid/git/skills/ce-architecture-scan"
+      }
+    },
+    "ce-codex-second-opinions": {
+      "source": {
+        "source": "github",
+        "repo": "royalaid/ce-codex-second-opinions"
+      }
+    },
+    "claude-plugins-official": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/claude-plugins-official"
+      }
     },
     "compound-engineering-plugin": {
       "source": {
@@ -555,22 +576,16 @@
       },
       "autoUpdate": true
     },
-    "claude-plugins-official": {
-      "source": {
-        "source": "github",
-        "repo": "anthropics/claude-plugins-official"
-      }
-    },
-    "ce-codex-second-opinions": {
-      "source": {
-        "source": "github",
-        "repo": "royalaid/ce-codex-second-opinions"
-      }
-    },
-    "ce-architecture-scan": {
+    "ce-goal-forge": {
       "source": {
         "source": "directory",
-        "path": "/Users/royalaid/git/skills/ce-architecture-scan"
+        "path": "/Users/royalaid/git/skills/ce-goal-forge"
+      }
+    },
+    "ce-complexity-optimizer": {
+      "source": {
+        "source": "directory",
+        "path": "/Users/royalaid/git/skills/ce-complexity-optimizer"
       }
     }
   },
