@@ -4,6 +4,10 @@ set -gx GOPATH $HOME/Documents/git/go
 set -gx RUST_SRC_PATH ~/.multirust/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src
 set fish_greeting
 
+# Some GUI launchers (e.g. cmux) inject a stale SHELL=zsh even though fish is the
+# login shell. Assert SHELL so installers (pnpm, etc.) target fish, not ~/.zshrc.
+set -gx SHELL (command -v fish)
+
 # Append directories to PATH (fish’s PATH is an array)
 #set -gx PATH $PATH $GOPATH/bin
 #set -gx PATH $PATH $GOROOT/bin
@@ -128,10 +132,17 @@ alias brewup 'brew update && brew outdated --greedy && brew upgrade --greedy && 
 
 # pnpm
 set -gx PNPM_HOME "/Users/royalaid/Library/pnpm"
-if not string match -q -- $PNPM_HOME $PATH
-  set -gx PATH "$PNPM_HOME" $PATH
+if not contains -- "$PNPM_HOME/bin" $PATH
+  set -gx PATH "$PNPM_HOME/bin" $PATH
 end
 # pnpm end
 
 # OpenClaw Completion
 source "/Users/royalaid/.openclaw/completions/openclaw.fish"
+
+# Entire CLI shell completion
+entire completion fish | source
+
+# Added by OrbStack: command-line tools and integration
+# This won't be added again if you remove it.
+source ~/.orbstack/shell/init2.fish 2>/dev/null || :
