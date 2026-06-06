@@ -189,8 +189,8 @@ unalias grv
 export HOMESHICK_DIR=/usr/local/opt/homeshick
 #source "/usr/local/opt/homeshick/homeshick.sh"
 
-if command -v mcfly >/dev/null 2>&1; then
-  eval "$(mcfly init zsh)"
+if command -v atuin >/dev/null 2>&1; then
+  eval "$(atuin init zsh)"
 fi
 
 source $HOME/.cargo/env

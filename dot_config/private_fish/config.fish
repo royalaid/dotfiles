@@ -119,7 +119,7 @@ set -gx PATH /Users/royalaid/.local/bin $PATH
 set -gx PATH $PATH /Users/royalaid/.cache/lm-studio/bin
 set -gx ANDROID_HOME /Users/$USER/Library/Android/sdk
 starship init fish | source
-mcfly init fish | source
+atuin init fish | source
 
 # opencode
 fish_add_path /Users/royalaid/.opencode/bin
