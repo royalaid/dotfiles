@@ -1,18 +1,29 @@
-alias grep='ggrep'
+# === Homebrew (macOS /opt/homebrew or Linuxbrew) ===
+# Must run early so brew-installed tools (starship, atuin, eza, ...) resolve below.
+for brew_bin in /opt/homebrew/bin/brew /home/linuxbrew/.linuxbrew/bin/brew
+    if test -x $brew_bin
+        $brew_bin shellenv | source
+        break
+    end
+end
+
+# On Linux, grep is already GNU grep; ggrep only exists via brew on macOS.
+if type -q ggrep
+    alias grep='ggrep'
+end
+
 # === Environment Variables ===
 set -gx GOPATH $HOME/Documents/git/go
-set -gx RUST_SRC_PATH ~/.multirust/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src
 set fish_greeting
-
-# Some GUI launchers (e.g. cmux) inject a stale SHELL=zsh even though fish is the
-# login shell. Assert SHELL so installers (pnpm, etc.) target fish, not ~/.zshrc.
-set -gx SHELL (command -v fish)
 
 # Append directories to PATH (fish’s PATH is an array)
 #set -gx PATH $PATH $GOPATH/bin
 #set -gx PATH $PATH $GOROOT/bin
 #set -gx PATH $JAVA_HOME/bin $PATH
-#set -gx PATH $PATH /Users/royalaid/Documents/git/flutter/flutter/bin
+
+# Some GUI launchers (e.g. cmux) inject a stale SHELL=zsh even though fish is the
+# login shell. Assert SHELL so installers (pnpm, etc.) target fish, not ~/.zshrc.
+set -gx SHELL (command -v fish)
 
 set -gx EDITOR nvim
 set -gx CLAUDE_CODE_NO_FLICKER 1
@@ -20,6 +31,11 @@ set -gx CLAUDE_CODE_NO_FLICKER 1
 # === Darwin‐Specific Settings ===
 if test (uname) = Darwin
     alias htop 'sudo htop'
+    set -gx RUST_SRC_PATH ~/.multirust/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src
+    set -gx ANDROID_HOME $HOME/Library/Android/sdk
+    # === Homeshick Settings ===
+    set -gx HOMESHICK_DIR /usr/local/opt/homeshick
+    # source /usr/local/opt/homeshick/homeshick.fish  # if a fish version exists
 end
 
 # === ag Alias (if command exists) ===
@@ -27,8 +43,10 @@ if type -q ag
     alias ag 'ag --pager="less -XFR"'
 end
 
-alias xa 'eza -abghl --icons --git --color=automatic'
-alias za 'eza -ghl --icons --git'
+if type -q eza
+    alias xa 'eza -abghl --icons --git --color=automatic'
+    alias za 'eza -ghl --icons --git'
+end
 
 # === VirtualEnvWrapper ===
 #set -gx WORKON_HOME $HOME/.virtualenvs
@@ -41,15 +59,32 @@ alias za 'eza -ghl --icons --git'
 # oh‑my‑zsh plugins and fpath adjustments don’t apply.
 # Use fisher or similar package managers for fish.
 
-# === System Binaries in PATH ===
-# (Uncomment and adjust MANPATH if needed.)
-
 # === nvm / RVM / Cargo ===
-# For nvm, use nvm.fish or an alternative fish-friendly tool.
-# source ~/.nvm/nvm.fish
-
+# macOS uses nvm.fish (fisher); Linux/WSL uses fnm below.
 set -gx PATH $PATH $HOME/.rvm/bin
 set -gx PATH $PATH $HOME/.cargo/bin
+
+# === fnm (Linux/WSL Node version manager) ===
+if test -d $HOME/.local/share/fnm
+    fish_add_path $HOME/.local/share/fnm
+    fnm env --shell fish | source
+end
+
+# === bun ===
+if test -d $HOME/.bun
+    set -gx BUN_INSTALL $HOME/.bun
+    fish_add_path $BUN_INSTALL/bin
+end
+
+# === kiex (Elixir) ===
+if test -d $HOME/.kiex/bin
+    fish_add_path --append $HOME/.kiex/bin
+end
+
+# === asdf (>= 0.16, shims-based) ===
+if test -d $HOME/.asdf/shims
+    fish_add_path $HOME/.asdf/shims
+end
 
 # === Linux‐Specific Clipboard Functions ===
 if test (uname) = Linux
@@ -100,48 +135,54 @@ if test -f $HOME/.fzf.fish
 end
 set -gx FZF_DEFAULT_COMMAND 'rg --files --no-ignore --hidden --follow --glob "!.git/*"'
 
-# === Removing a Previous Alias ===
-# Fish doesn’t support “unalias” directly.
-# To remove a function alias, use: functions -e grv 2>/dev/null
-
-# === Homeshick Settings ===
-set -gx HOMESHICK_DIR /usr/local/opt/homeshick
-# source /usr/local/opt/homeshick/homeshick.fish  # if a fish version exists
-
-set -gx PATH $PATH /Users/royalaid/.foundry/bin
+set -gx PATH $PATH $HOME/.foundry/bin
 
 # === Nargo Settings ===
-set -gx NARGO_HOME /Users/royalaid/.nargo
+set -gx NARGO_HOME $HOME/.nargo
 set -gx PATH $PATH $NARGO_HOME/bin
 
-# === LM Studio CLI and Android Settings ===
-set -gx PATH /Users/royalaid/.local/bin $PATH
-set -gx PATH $PATH /Users/royalaid/.cache/lm-studio/bin
-set -gx ANDROID_HOME /Users/$USER/Library/Android/sdk
-starship init fish | source
-atuin init fish | source
+# === LM Studio CLI and local bin ===
+set -gx PATH $HOME/.local/bin $PATH
+set -gx PATH $PATH $HOME/.cache/lm-studio/bin
+
+if type -q starship
+    starship init fish | source
+end
+if type -q atuin
+    atuin init fish | source
+end
 
 # opencode
-fish_add_path /Users/royalaid/.opencode/bin
+fish_add_path $HOME/.opencode/bin
 
 # Added by Antigravity
-fish_add_path /Users/royalaid/.antigravity/antigravity/bin
+if test -d $HOME/.antigravity/antigravity/bin
+    fish_add_path $HOME/.antigravity/antigravity/bin
+end
 
 # Brew updater
 alias brewup 'brew update && brew outdated --greedy && brew upgrade --greedy && brew cleanup'
 
 # pnpm
-set -gx PNPM_HOME "/Users/royalaid/Library/pnpm"
+if test (uname) = Darwin
+    set -gx PNPM_HOME "$HOME/Library/pnpm"
+else
+    set -gx PNPM_HOME "$HOME/.local/share/pnpm"
+end
 if not contains -- "$PNPM_HOME/bin" $PATH
   set -gx PATH "$PNPM_HOME/bin" $PATH
 end
 # pnpm end
 
 # OpenClaw Completion
-source "/Users/royalaid/.openclaw/completions/openclaw.fish"
+if test -f "$HOME/.openclaw/completions/openclaw.fish"
+    source "$HOME/.openclaw/completions/openclaw.fish"
+end
 
 # Entire CLI shell completion
-entire completion fish | source
+if type -q entire
+    entire completion fish | source
+end
 
 # Added by OrbStack: command-line tools and integration
 # This won't be added again if you remove it.
