@@ -1,0 +1,9 @@
+# fisher-managed plugin files — installed by run_onchange_after_install-fish-plugins.sh
+# from fish_plugins (the single source of truth), NOT tracked by chezmoi. Tracking
+# them caused "file already exists" conflicts when fisher ran on a fresh machine.
+.config/fish/functions
+.config/fish/completions
+.config/fish/conf.d/__async_prompt.fish
+.config/fish/conf.d/autopair.fish
+.config/fish/conf.d/fzf.fish
+.config/fish/conf.d/nvm.fish

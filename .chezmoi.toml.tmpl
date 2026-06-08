@@ -1,0 +1,10 @@
+# Rendered by `chezmoi init` into ~/.config/chezmoi/chezmoi.toml.
+# Canonizes the age-encryption setup so encrypted_*.age files decrypt on any
+# fresh machine WITHOUT a hand-written config. The age identity (key.txt) is a
+# secret restored out-of-band (NAS blob / Bitwarden) BEFORE `chezmoi init`;
+# only the public recipient lives here.
+encryption = "age"
+
+[age]
+    identity = "{{ .chezmoi.homeDir }}/.config/chezmoi/key.txt"
+    recipient = "age1lv2005vklsw28thvxrxxt96s77ezau0qmrx8tnfr3c27s02f0dcsdjtz57"
