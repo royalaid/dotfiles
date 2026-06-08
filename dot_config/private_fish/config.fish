@@ -152,6 +152,14 @@ if type -q atuin
     atuin init fish | source
 end
 
+# zoxide (smarter cd; replaces fasd). Provides `z` and `zi` (interactive).
+if type -q zoxide
+    zoxide init fish | source
+    # Muscle memory from the old fasd autojump aliases.
+    alias j  z
+    alias jj zi
+end
+
 # opencode
 fish_add_path $HOME/.opencode/bin
 
