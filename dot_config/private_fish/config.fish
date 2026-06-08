@@ -28,6 +28,11 @@ set -gx SHELL (command -v fish)
 set -gx EDITOR nvim
 set -gx CLAUDE_CODE_NO_FLICKER 1
 
+# Advertise 24-bit color so TUIs emit truecolor escapes instead of snapping hex
+# colors to the 256-color palette. WSL/Windows Terminal renders truecolor but
+# leaves COLORTERM unset; harmless where it's already set (iTerm/most emulators).
+set -gx COLORTERM truecolor
+
 # === Darwin‐Specific Settings ===
 if test (uname) = Darwin
     alias htop 'sudo htop'
