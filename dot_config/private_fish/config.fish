@@ -200,3 +200,14 @@ end
 # Added by OrbStack: command-line tools and integration
 # This won't be added again if you remove it.
 source ~/.orbstack/shell/init2.fish 2>/dev/null || :
+
+# >>> grok installer >>>
+if test -d $HOME/.grok/bin
+    fish_add_path $HOME/.grok/bin
+end
+# <<< grok installer <<<
+
+# Added by Antigravity IDE
+if test -d $HOME/.antigravity-ide/antigravity-ide/bin
+    fish_add_path $HOME/.antigravity-ide/antigravity-ide/bin
+end
