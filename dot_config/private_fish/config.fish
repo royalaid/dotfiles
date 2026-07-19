@@ -176,6 +176,16 @@ end
 # Brew updater
 alias brewup 'brew update && brew outdated --greedy && brew upgrade --greedy && brew cleanup'
 
+# claude with gpt-5.6-sol as subagent + primary model
+function claudex
+    env \
+        CLAUDE_CODE_SUBAGENT_MODEL=gpt-5.6-sol \
+        CLAUDE_CODE_ALWAYS_ENABLE_EFFORT=1 \
+        CLAUDE_CODE_MAX_TOOL_USE_CONCURRENCY=3 \
+        ENABLE_TOOL_SEARCH=false \
+        claude --model gpt-5.6-sol $argv
+end
+
 # pnpm
 if test (uname) = Darwin
     set -gx PNPM_HOME "$HOME/Library/pnpm"
