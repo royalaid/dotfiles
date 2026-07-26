@@ -8,6 +8,12 @@
 .config/fish/conf.d/fzf.fish
 .config/fish/conf.d/nvm.fish
 
+# This repo's own agent-instruction files are repo-local. Deployed to $HOME they would
+# become parent-directory context for every project under ~, competing with the canonical
+# ~/.codex/AGENTS.md + ~/.claude/CLAUDE.md pair.
+AGENTS.md
+CLAUDE.md
+
 # Claude Code rewrites this constantly (enabledPlugins, effortLevel, hooks, marketplaces)
 # — machine-local state, not worth tracking. Managed by Claude Code itself.
 .claude/settings.json
