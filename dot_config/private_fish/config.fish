@@ -16,6 +16,14 @@ end
 set -gx GOPATH $HOME/Documents/git/go
 set fish_greeting
 
+# Share Codex config, auth, and session history with the Windows Codex app, so
+# the WSL and Windows sides do not keep two divergent logins and histories.
+# Guarded on the directory: /mnt/c exists only under WSL, so this stays inert on
+# macOS and on non-WSL Linux.
+if test -d /mnt/c/Users/gwmai/.codex
+    set -gx CODEX_HOME /mnt/c/Users/gwmai/.codex
+end
+
 # Append directories to PATH (fish’s PATH is an array)
 #set -gx PATH $PATH $GOPATH/bin
 #set -gx PATH $PATH $GOROOT/bin
