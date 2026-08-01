@@ -1,0 +1,56 @@
+[user]
+	name = Royalaid
+	email = 2439803+royalaid@users.noreply.github.com
+
+[core]
+	autocrlf = {{ if eq .chezmoi.os "windows" }}true{{ else }}input{{ end }}
+	editor = {{ if lookPath "cursor" }}cursor --wait{{ else if lookPath "nvim" }}nvim{{ else }}vi{{ end }}
+{{- if lookPath "delta" }}
+	pager = delta
+{{- end }}
+{{- if stat (joinPath .chezmoi.homeDir ".gitignore") }}
+	excludesfile = {{ joinPath .chezmoi.homeDir ".gitignore" }}
+{{- end }}
+{{ if lookPath "delta" }}
+[interactive]
+	diffFilter = delta --color-only
+
+[delta]
+	features = side-by-side line-numbers decorations
+	syntax-theme = Dracula
+	plus-style = syntax "#003800"
+	minus-style = syntax "#3f0001"
+
+[delta "decorations"]
+	commit-decoration-style = bold yellow box ul
+	file-style = bold yellow ul
+	file-decoration-style = none
+	hunk-header-decoration-style = cyan box ul
+
+[delta "line-numbers"]
+	line-numbers-left-style = cyan
+	line-numbers-right-style = cyan
+	line-numbers-minus-style = 124
+	line-numbers-plus-style = 28
+{{ end }}
+{{- if lookPath "git-lfs" }}
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+{{ end }}
+[init]
+	defaultBranch = main
+
+[rerere]
+	enabled = true
+	autoupdate = true
+
+# Machine-local git settings: credential helpers, per-host identity, anything
+# whose value is a path on THIS machine. `gh auth setup-git` writes its helper
+# blocks to the global config, so without this include a chezmoi apply would
+# delete them and break HTTPS auth. Deliberately untracked; git ignores the
+# include silently when the file does not exist.
+[include]
+	path = {{ joinPath .chezmoi.homeDir ".gitconfig.local" }}
