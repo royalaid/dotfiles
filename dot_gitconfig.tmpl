@@ -3,13 +3,18 @@
 	email = 2439803+royalaid@users.noreply.github.com
 
 [core]
-	autocrlf = {{ if eq .chezmoi.os "windows" }}true{{ else }}input{{ end }}
+	# input + eol=lf everywhere, including Windows. This host edits the same
+	# trees from Windows and from WSL over \\wsl.localhost, so checking out
+	# CRLF on the Windows side would show every file as modified from the
+	# other side. Do not "fix" this to autocrlf=true.
+	autocrlf = input
+	eol = lf
 	editor = {{ if lookPath "cursor" }}cursor --wait{{ else if lookPath "nvim" }}nvim{{ else }}vi{{ end }}
 {{- if lookPath "delta" }}
 	pager = delta
 {{- end }}
 {{- if stat (joinPath .chezmoi.homeDir ".gitignore") }}
-	excludesfile = {{ joinPath .chezmoi.homeDir ".gitignore" }}
+	excludesfile = {{ .chezmoi.homeDir | replace "\\" "/" }}/.gitignore
 {{- end }}
 {{ if lookPath "delta" }}
 [interactive]
@@ -47,10 +52,13 @@
 	enabled = true
 	autoupdate = true
 
-# Machine-local git settings: credential helpers, per-host identity, anything
-# whose value is a path on THIS machine. `gh auth setup-git` writes its helper
-# blocks to the global config, so without this include a chezmoi apply would
-# delete them and break HTTPS auth. Deliberately untracked; git ignores the
-# include silently when the file does not exist.
+# Machine-local git settings: credential helpers, per-host identity, and the
+# safe.directory list. `gh auth setup-git` writes its helper blocks to the
+# global config, and safe.directory accumulates per machine, so without this
+# include a chezmoi apply would delete both and break auth and repo access.
+# Deliberately untracked; git ignores the include when the file is absent.
+#
+# Forward slashes are required even on Windows: git treats a backslash in a
+# config VALUE as an escape, so C:\Users\... is a parse error, not a path.
 [include]
-	path = {{ joinPath .chezmoi.homeDir ".gitconfig.local" }}
+	path = {{ .chezmoi.homeDir | replace "\\" "/" }}/.gitconfig.local
