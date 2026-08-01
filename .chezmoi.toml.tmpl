@@ -3,7 +3,7 @@
 # fresh machine WITHOUT a hand-written config. The age identity (key.txt) is a
 # secret restored out-of-band (NAS blob / Bitwarden) BEFORE `chezmoi init`;
 # only the public recipient lives here.
-{{- if eq .chezmoi.os "windows" }}
+{{ if eq .chezmoi.os "windows" -}}
 # Windows keeps its checkout at ~/git/dotfiles rather than the default
 # ~/.local/share/chezmoi, so one clone serves both editing and chezmoi. This
 # must live in the template, not just the rendered file: `chezmoi init`
