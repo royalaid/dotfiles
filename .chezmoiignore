@@ -17,3 +17,34 @@ CLAUDE.md
 # Claude Code rewrites this constantly (enabledPlugins, effortLevel, hooks, marketplaces)
 # — machine-local state, not worth tracking. Managed by Claude Code itself.
 .claude/settings.json
+
+{{ if ne .chezmoi.os "darwin" }}
+# --- non-macOS ---------------------------------------------------------------
+# dot_zshrc and dot_zprofile are macOS-authored: they hardcode /Users/royalaid,
+# oh-my-zsh, iTerm2 and a stable-x86_64-apple-darwin rust toolchain. The Linux
+# and WSL homes have their own independently written .zshrc (linuxbrew, bun,
+# fnm, asdf), so applying the macOS one would clobber it. fish is the login
+# shell on those hosts, making zsh vestigial there — but vestigial is not the
+# same as disposable, so keep the live file rather than overwrite it.
+.zshrc
+.zprofile
+{{ end }}
+
+{{ if eq .chezmoi.os "windows" }}
+# --- Windows -----------------------------------------------------------------
+# Unix-only surface. Windows keeps its equivalents elsewhere: Neovim reads
+# %LOCALAPPDATA%\nvim, PowerShell reads Documents\PowerShell, and there is no
+# fish, tmux or fontconfig here. What Windows DOES share with the Unix hosts is
+# the agent-instruction pair (.claude/CLAUDE.md, .codex/AGENTS.md) plus
+# .gitconfig, which is templated per OS — so none of those are listed here.
+.bashrc
+.config/fish
+.config/fontconfig
+.config/nvim
+.fonts
+.gvimrc
+.vimrc
+.local
+.tmux.conf
+install-fish-plugins.sh
+{{ end }}
