@@ -1,0 +1,267 @@
+model = "gpt-daybreak-blue-latest"
+model_reasoning_effort = "medium"
+
+
+service_tier = "default"
+approvals_reviewer = "auto_review"
+agents.max_threads = 20
+
+
+
+
+
+
+
+# managed by hermes-agent — `hermes codex-runtime migrate` regenerates this section
+
+default_permissions = ":workspace"
+
+sandbox_mode = "workspace-write"
+web_search = "indexed"
+model_reasoning_summary = "detailed"
+notify = [ "C:\\Users\\gwmai\\AppData\\Local\\OpenAI\\Codex\\runtimes\\cua_node\\cd454f7c85348168\\bin\\node_modules\\@oai\\sky\\bin\\windows\\codex-computer-use.exe", "turn-ended" ]
+[mcp_servers.hermes-tools]
+command = "C:\\Users\\gwmai\\AppData\\Local\\hermes\\hermes-agent\\venv\\Scripts\\python.exe"
+args = ["-P", "-m", "agent.transports.hermes_tools_mcp_server"]
+env = { HERMES_HOME = "C:\\Users\\gwmai\\AppData\\Local\\hermes", PYTHONPATH = "C:\\Users\\gwmai\\AppData\\Local\\hermes\\hermes-agent", HERMES_QUIET = "1", HERMES_REDACT_SECRETS = "true" }
+startup_timeout_sec = 30.0
+tool_timeout_sec = 600.0
+
+[mcp_servers.node_repl]
+args = []
+command = 'C:\Users\gwmai\AppData\Local\OpenAI\Codex\runtimes\cua_node\cd454f7c85348168\bin\node_repl.exe'
+startup_timeout_sec = 120
+
+[mcp_servers.node_repl.env]
+NODE_REPL_NATIVE_PIPE_CONNECT_TIMEOUT_MS = "1000"
+NODE_REPL_NODE_MODULE_DIRS = 'C:\Users\gwmai\AppData\Local\OpenAI\Codex\runtimes\cua_node\cd454f7c85348168\bin\node_modules'
+NODE_REPL_NODE_PATH = 'C:\Users\gwmai\AppData\Local\OpenAI\Codex\runtimes\cua_node\cd454f7c85348168\bin\node.exe'
+NODE_REPL_TRUSTED_CODE_PATHS = 'C:\Users\gwmai\.codex;C:\Users\gwmai\AppData\Local\OpenAI\Codex\runtimes\cua_node\cd454f7c85348168\bin\node_modules'
+CODEX_HOME = 'C:\Users\gwmai\.codex'
+BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
+BROWSER_USE_TINYSKY_ENABLED = "0"
+NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = "Control the in-app browser in conjunction with the Browser Plugin."
+NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = "Control the Chrome browser in conjunction with the Chrome Plugin. Prefer this method of controlling Chrome over alternatives (such as Computer Use) unless the user explicitly mentions an alternative."
+BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
+BROWSER_USE_CODEX_APP_VERSION = "26.818.41509"
+NODE_REPL_TRUSTED_SERVICES = '{"browser":"C:/Users/gwmai/.codex/plugins/cache/openai-bundled/browser/26.818.41509/scripts/browser-service.mjs","sky":"@oai/sky/service"}'
+SKY_CUA_NATIVE_PIPE = "1"
+SKY_CUA_NATIVE_PIPE_DIRECTORY = '\\.\pipe\codex-computer-use-30d8564a-9093-4beb-8acf-dcee3177fc66'
+CODEX_CLI_PATH = 'C:\Users\gwmai\AppData\Local\OpenAI\Codex\bin\110b3d66a02d864e\codex.exe'
+
+[plugins."browser@openai-bundled"]
+enabled = true
+
+[plugins."chrome-devtools-mcp@claude-plugins-official"]
+enabled = true
+
+[plugins."compound-engineering@compound-engineering-plugin"]
+enabled = true
+
+[plugins."documents@openai-primary-runtime"]
+enabled = true
+
+[plugins."github@openai-curated-remote"]
+enabled = true
+
+[plugins."linear@openai-curated-remote"]
+enabled = true
+
+[plugins."openai-templates@openai-curated-remote"]
+enabled = true
+
+[plugins."pdf@openai-primary-runtime"]
+enabled = true
+
+[plugins."presentations@openai-primary-runtime"]
+enabled = true
+
+[plugins."sites@openai-bundled"]
+enabled = true
+
+[plugins."spreadsheets@openai-primary-runtime"]
+enabled = true
+
+[plugins."template-creator@openai-primary-runtime"]
+enabled = true
+
+[plugins."visualize@openai-bundled"]
+enabled = true
+
+[plugins."chrome@openai-bundled"]
+enabled = true
+
+[plugins."codex-app-tools@openai-bundled"]
+enabled = true
+
+[plugins."computer-use@openai-bundled"]
+enabled = true
+
+[marketplaces.openai-bundled]
+source_type = "local"
+source = '\\?\C:\Users\gwmai\.codex\.tmp\bundled-marketplaces\openai-bundled'
+
+[marketplaces.openai-primary-runtime]
+last_updated = "2026-08-21T12:14:05Z"
+source_type = "local"
+source = '\\?\C:\Users\gwmai\.cache\codex-runtimes\codex-primary-runtime\plugins\openai-primary-runtime'
+
+[marketplaces.claude-plugins-official]
+last_updated = "2026-08-21T20:17:02Z"
+last_revision = "340e33aef211d95769d252324854497af871dafe"
+source_type = "git"
+source = "https://github.com/anthropics/claude-plugins-official.git"
+
+[marketplaces.compound-engineering-plugin]
+last_updated = "2026-08-23T08:03:25Z"
+last_revision = "56cb13aa15799d9c0fd01a82d0f4877043395841"
+source_type = "git"
+source = "https://github.com/EveryInc/compound-engineering-plugin.git"
+
+[shell_environment_policy]
+inherit = "core"
+
+[shell_environment_policy.set]
+CLAUDE_CODE_USE_POWERSHELL_TOOL = "1"
+NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "0b6d31ced7f1e01dcc1e3aba9416cb1ed01f17e76030ef4a4d1d3e19fd8e0bc6"
+
+[windows]
+sandbox = "elevated"
+
+[projects.'c:\users\gwmai']
+trust_level = "trusted"
+
+[projects."/mnt/c/Users/gwmai"]
+trust_level = "trusted"
+
+[projects."/mnt/c/Users/gwmai/Documents/Codex/2026-06-11/home-royalaid-fc-vid-uploader"]
+trust_level = "trusted"
+
+[projects."/mnt/c/Users/gwmai/Documents/Codex/2026-06-11/home-royalaid-git-lore"]
+trust_level = "trusted"
+
+[projects."/mnt/c/Users/gwmai/Documents/Codex/2026-06-11/home-royalaid-git-leet-code-fixer"]
+trust_level = "trusted"
+
+[projects."/mnt/c/Users/gwmai/Documents/Codex/2026-06-11/home-royalaid-fc-vid-uploader-v2"]
+trust_level = "trusted"
+
+[projects."/home/royalaid/git/lore"]
+trust_level = "trusted"
+
+[projects."/home/royalaid/git/leet-code-fixer"]
+trust_level = "trusted"
+
+[projects."/home/royalaid/git/fc-vid-uploader"]
+trust_level = "trusted"
+
+[projects.'c:\users\gwmai\git\fc-vid-uploader']
+trust_level = "trusted"
+
+[projects.'c:\users\gwmai\git\lore']
+trust_level = "trusted"
+
+[projects.'c:\users\gwmai\git\leet-code-fixer']
+trust_level = "trusted"
+
+[projects.'c:\users\gwmai\git\rift-wizard-explorer']
+trust_level = "trusted"
+
+[projects.'c:\users\gwmai\git\royalaid-sites']
+trust_level = "trusted"
+
+[projects.'c:\users\gwmai\git\t3code']
+trust_level = "trusted"
+
+[projects.'c:\users\gwmai\git\homepage']
+trust_level = "trusted"
+
+[projects.'c:\users\gwmai\git\sm64-native-oracle']
+trust_level = "trusted"
+
+[projects.'c:\users\gwmai\git\helmsman']
+trust_level = "trusted"
+
+[projects.'c:\users\gwmai\git\hermes-agent']
+trust_level = "trusted"
+
+[projects.'c:\users\gwmai\appdata\local\hermes\worktrees\openai-native-windows']
+trust_level = "trusted"
+
+[projects.'c:\users\gwmai\appdata\local\hermes\hermes-agent']
+trust_level = "trusted"
+
+[projects.'c:\users\gwmai\git\slop']
+trust_level = "trusted"
+
+[desktop]
+ambient-suggestions-enabled = true
+followUpQueueMode = "steer"
+conversationDetailMode = "STEPS_COMMANDS"
+runCodexInWindowsSubsystemForLinux = false
+show-context-window-usage = true
+keepRemoteControlAwakeWhilePluggedIn = false
+selected-avatar-id = "custom:latch"
+external-agent-import-sync-enabled = true
+appearanceDarkCodeThemeId = "tokyo-night"
+appearanceLightCodeThemeId = "catppuccin"
+enabled-reasoning-efforts = ["low", "medium", "high", "xhigh", "ultra", "max"]
+
+[desktop.open-in-target-preferences]
+global = "cursor"
+
+[desktop.appearanceDarkChromeTheme]
+accent = "#3d59a1"
+contrast = 60
+ink = "#a9b1d6"
+opaqueWindows = false
+surface = "#1a1b26"
+
+[desktop.appearanceDarkChromeTheme.fonts]
+
+[desktop.appearanceDarkChromeTheme.semanticColors]
+diffAdded = "#449dab"
+diffRemoved = "#914c54"
+skill = "#9d7cd8"
+
+[desktop.appearanceLightChromeTheme]
+accent = "#8839ef"
+contrast = 45
+ink = "#4c4f69"
+opaqueWindows = false
+surface = "#eff1f5"
+
+[desktop.appearanceLightChromeTheme.fonts]
+
+[desktop.appearanceLightChromeTheme.semanticColors]
+diffAdded = "#40a02b"
+diffRemoved = "#d20f39"
+skill = "#8839ef"
+
+[features]
+hooks = true
+js_repl = false
+
+[mcp_servers.chrome-devtools]
+command = "npx"
+args = ["-y", "chrome-devtools-mcp@latest", "--autoConnect"]
+
+[mcp_servers.codegraph]
+command = "codegraph"
+args = ["serve", "--mcp"]
+
+[mcp_servers.semble]
+command = "uvx"
+args = ["--from", "semble[mcp]", "semble", "--content", "all"]
+
+[tui.model_availability_nux]
+"gpt-5.5" = 4
+"gpt-5.6-sol" = 4
+
+[hooks.state]
+
+[hooks.state.'C:\Users\gwmai\.codex\hooks.json:pre_tool_use:0:0']
+trusted_hash = "sha256:5649b60c0c67da3cd6da3a65886ed781bd013f11b88374ecc6f84f04e32c405a"
+
+[sandbox_workspace_write]
+network_access = true
