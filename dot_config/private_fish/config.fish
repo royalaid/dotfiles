@@ -184,15 +184,29 @@ end
 # Brew updater
 alias brewup 'brew update && brew outdated --greedy && brew upgrade --greedy && brew cleanup'
 
-# claude with gpt-5.6-sol as subagent + primary model
+# claude with gpt-5.6-sol as subagent + primary model, routed through CLIProxyAPI.
+# Auth token stays machine-local at ~/.config/cliproxy/auth_token (mode 600), not in git.
 function claudex
+    set -l token
+    if set -q ANTHROPIC_AUTH_TOKEN[1]
+        set token $ANTHROPIC_AUTH_TOKEN
+    else if test -r $HOME/.config/cliproxy/auth_token
+        set token (string trim < $HOME/.config/cliproxy/auth_token)
+    end
+    if test -z "$token"
+        echo "claudex: missing CLIProxy token (set ANTHROPIC_AUTH_TOKEN or ~/.config/cliproxy/auth_token)" >&2
+        return 1
+    end
     env \
         CLAUDE_CODE_SUBAGENT_MODEL=gpt-5.6-sol \
         CLAUDE_CODE_ALWAYS_ENABLE_EFFORT=1 \
         CLAUDE_CODE_MAX_TOOL_USE_CONCURRENCY=3 \
         ENABLE_TOOL_SEARCH=false \
+        ANTHROPIC_BASE_URL=http://127.0.0.1:8317 \
+        ANTHROPIC_AUTH_TOKEN=$token \
         claude --model gpt-5.6-sol $argv
 end
+
 
 # pnpm
 if test (uname) = Darwin
@@ -228,4 +242,43 @@ end
 # Added by Antigravity IDE
 if test -d $HOME/.antigravity-ide/antigravity-ide/bin
     fish_add_path $HOME/.antigravity-ide/antigravity-ide/bin
+end
+
+# Keep Homebrew first while retaining PNPM_HOME as an opt-in last entry.
+# Runs at the end so earlier fish_add_path / pnpm blocks cannot bury brew.
+set -l _node_toolchain_fish_path
+set -l _node_toolchain_fish_pnpm_bin
+if set -q PNPM_HOME[1]
+    set _node_toolchain_fish_pnpm_bin "$PNPM_HOME/bin"
+end
+for _node_toolchain_fish_entry in $PATH
+    if test "$_node_toolchain_fish_entry" != /opt/homebrew/bin
+        and test "$_node_toolchain_fish_entry" != /opt/homebrew/sbin
+        and test "$_node_toolchain_fish_entry" != "$_node_toolchain_fish_pnpm_bin"
+        set -a _node_toolchain_fish_path "$_node_toolchain_fish_entry"
+    end
+end
+set -gx PATH /opt/homebrew/bin /opt/homebrew/sbin $_node_toolchain_fish_path
+if set -q _node_toolchain_fish_pnpm_bin[1]
+    set -a PATH "$_node_toolchain_fish_pnpm_bin"
+end
+set -e _node_toolchain_fish_path _node_toolchain_fish_pnpm_bin _node_toolchain_fish_entry
+
+# hermes fork-integration update pin
+# Bare `hermes update` defaults to main; keep this fork on fork-integration.
+function hermes
+  if test (count $argv) -ge 1; and test $argv[1] = update
+    set -l has_branch 0
+    for a in $argv
+      if test "$a" = --branch; or string match -q -- '--branch=*' "$a"
+        set has_branch 1
+        break
+      end
+    end
+    if test $has_branch -eq 0
+      command hermes update --branch fork-integration $argv[2..-1]
+      return $status
+    end
+  end
+  command hermes $argv
 end

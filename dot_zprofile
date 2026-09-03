@@ -20,3 +20,8 @@ eval "$(/opt/homebrew/bin/brew shellenv zsh)"
 # Added by OrbStack: command-line tools and integration
 # This won't be added again if you remove it.
 source ~/.orbstack/shell/init.zsh 2>/dev/null || :
+
+# Keep the Homebrew Node toolchain last in each startup sequence.
+if [ -r "$HOME/.config/node-toolchain/node-toolchain.sh" ]; then
+    . "$HOME/.config/node-toolchain/node-toolchain.sh"
+fi

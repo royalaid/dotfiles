@@ -30,6 +30,15 @@ CLAUDE.md
 .zprofile
 {{ end }}
 
+{{ if eq .chezmoi.os "darwin" }}
+# --- macOS -------------------------------------------------------------------
+# Managed source tip is the Windows Codex config (daybreak model, Windows
+# hooks/projects). This Mac runs gpt-5.6-sol via cliproxyapi with a divergent
+# hook/plugin set. Applying the Windows file would clobber it; templating
+# per-OS belongs in a follow-up. Keep the live Mac file unmanaged for now.
+.codex/config.toml
+{{ end }}
+
 {{ if eq .chezmoi.os "windows" }}
 # --- Windows -----------------------------------------------------------------
 # Unix-only surface. Windows keeps its equivalents elsewhere: Neovim reads

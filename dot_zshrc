@@ -126,7 +126,8 @@ export PATH="$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:
 # ssh
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
 
-. ~/.nvm/nvm.sh # This loads nvm.
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" --no-use
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 
@@ -221,3 +222,8 @@ fi
 export PATH="$PATH:/Users/royalaid/.cache/lm-studio/bin"
 export PATH="/Users/royalaid/.local/bin:$PATH"
 export ANDROID_HOME=/Users/$USER/Library/Android/sdk
+
+# Keep the Homebrew Node toolchain last in each startup sequence.
+if [ -r "$HOME/.config/node-toolchain/node-toolchain.sh" ]; then
+    . "$HOME/.config/node-toolchain/node-toolchain.sh"
+fi
