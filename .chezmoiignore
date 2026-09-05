@@ -48,3 +48,6 @@ CLAUDE.md
 .tmux.conf
 install-fish-plugins.sh
 {{ end }}
+
+# Repository knowledge is not a home-directory deployable.
+docs
