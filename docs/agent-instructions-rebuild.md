@@ -1,5 +1,7 @@
 # Agent instruction rebuild — 2026-09-05
 
+These are historical rebuild notes. For the current source layout and update procedure, see [Maintain shared agent instructions](shared-agent-instructions.md).
+
 ## Verified source
 
 Read the official [GPT-6 Astra guide: Prompting best practices](https://developers.openai.com/api/docs/guides/latest-model?model=gpt-6-astra#prompting-best-practices) on 2026-09-05. This is the model-specific source; no guessed Cookbook URL is required.

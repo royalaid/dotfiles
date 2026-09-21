@@ -8,12 +8,6 @@
 .config/fish/conf.d/fzf.fish
 .config/fish/conf.d/nvm.fish
 
-# This repo's own agent-instruction files are repo-local. Deployed to $HOME they would
-# become parent-directory context for every project under ~, competing with the canonical
-# ~/.codex/AGENTS.md + ~/.claude/CLAUDE.md pair.
-AGENTS.md
-CLAUDE.md
-
 # Claude Code rewrites this constantly (enabledPlugins, effortLevel, hooks, marketplaces)
 # — machine-local state, not worth tracking. Managed by Claude Code itself.
 .claude/settings.json
@@ -44,7 +38,7 @@ CLAUDE.md
 # Unix-only surface. Windows keeps its equivalents elsewhere: Neovim reads
 # %LOCALAPPDATA%\nvim, PowerShell reads Documents\PowerShell, and there is no
 # fish, tmux or fontconfig here. What Windows DOES share with the Unix hosts is
-# the agent-instruction pair (.claude/CLAUDE.md, .codex/AGENTS.md) plus
+# the shared AGENTS.md, agent entry points, and
 # .gitconfig, which is templated per OS — so none of those are listed here.
 .bashrc
 .config/fish
@@ -57,6 +51,3 @@ CLAUDE.md
 .tmux.conf
 install-fish-plugins.sh
 {{ end }}
-
-# Repository knowledge is not a home-directory deployable.
-docs
