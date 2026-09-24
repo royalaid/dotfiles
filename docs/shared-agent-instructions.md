@@ -50,7 +50,9 @@ OpenCode refreshes global instructions before the next model request. Start a ne
 
 ## Migration from the previous layout
 
-The September 2026 refactor moved deployable files into `home/` without changing their destination paths. The previous `dot_codex/encrypted_AGENTS.md.age` snapshot became the shared `home/encrypted_AGENTS.md.age`; the Codex path became a symlink. The Git history retains the earlier instruction versions and the September 5 rebuild notes.
+The September 2026 refactor moved deployable files into `home/` without changing their destination paths. The Codex path became a symlink to the shared `home/encrypted_AGENTS.md.age`. The Git history retains the earlier instruction versions and the September 5 rebuild notes.
+
+The first shared snapshot (`98b0b08`) was a refactor of the Mac's `~/AGENTS.md`, not of the Windows-authored `dot_codex/encrypted_AGENTS.md.age` it replaced, so it dropped rules that the September 5 rebuild had kept on purpose. The next commit restored them in the new style: the `:(` fix request, skill precedence, push and merge authorization, PR check follow-through, the Windows host section, and the Codex-specific section. When merging instruction changes from another host, compare against the snapshot being replaced as well as the live file on the host doing the edit.
 
 The HTML before-and-after board is saved as `docs/agents-refactor-board.html.age`. It embeds instruction text, so it uses the same encryption as the source snapshots. From the repository root, decrypt it to a local file:
 
