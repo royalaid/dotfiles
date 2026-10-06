@@ -4,8 +4,20 @@
 that file and `home/dot_agents/install-authorization-policy.py` with chezmoi,
 then run `python3 ~/.agents/install-authorization-policy.py` to preview and
 `python3 ~/.agents/install-authorization-policy.py --apply` to merge adapters
-into existing machine-local settings. Windows may use `python` or `py -3`.
+into existing machine-local settings. Requires Python 3.11 or newer (standard-library TOML parser). Windows may use
+`python` or `py -3`.
 Use a fresh session after installation. A second preview must have no changes.
+
+The machine-local `~/.agents/authorization-adapter-state.json` records the exact
+Claude entries the installer owns, so regeneration removes only those entries.
+Existing custom arrays without `$defaults` stop for reconciliation instead of
+being silently changed. Existing OpenCode JSON permission entries retain their
+effect; a JSONC layer above existing JSON permissions stops for reconciliation.
+Malformed marker blocks stop before any write. File replacement preserves links
+and is atomic per file, with concurrent-edit checks before application and before each replacement.
+Coordinate a single config writer: filesystem replacement is not a compare-and-
+swap against an uncooperative editor in the final check/replace interval. The
+multi-file update is not transactional; rerun after an interrupted application.
 
 The installer embeds the same Markdown in Codex's additive
 `auto_review.extra_policy`, and Claude's top-level `autoMode.environment` with
