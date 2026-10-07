@@ -57,6 +57,9 @@ def atomic_write(path,text,expected):
 def main():
     p=argparse.ArgumentParser(); p.add_argument('--home',type=pathlib.Path,default=pathlib.Path.home()); p.add_argument('--apply',action='store_true'); args=p.parse_args()
     home=args.home.resolve(); policy=home/'.agents/authorization-policy.md'; content=policy.read_text(encoding='utf-8'); digest=hashlib.sha256(content.encode()).hexdigest()
+    # Instruction files are chezmoi snapshots shared by every host, so they name
+    # the policy by a home-relative path; an absolute one drifts per host.
+    shared='~/.agents/authorization-policy.md'
     statepath=home/'.agents/authorization-adapter-state.json'
     state=json.loads(statepath.read_text(encoding='utf-8')) if statepath.exists() else {}; nextstate={}; planned={}
     def put(path,text):
@@ -76,7 +79,7 @@ def main():
         generated=managed(old,TSTART,TEND,block)
         tomllib.loads(generated)
         put(path,generated)
-        instruction(root/'AGENTS.md','Read '+policy.as_posix()+' before provider delegation or remote writes; apply it alongside project gates.')
+        instruction(root/'AGENTS.md','Read '+shared+' before provider delegation or remote writes; apply it alongside project gates.')
     allow=content.split('## Authorized company GLM review\n\n',1)[1].split('\n## Payload',1)[0].strip()
     for name in ('.claude','.claude-personal'):
         root=home/name
@@ -94,7 +97,7 @@ def main():
             auto[key]=values; generated[key]=entry
         nextstate[str(path.resolve())]=generated
         put(path,json.dumps(d,indent=2,ensure_ascii=False)+'\n')
-        instruction(root/'CLAUDE.md','@'+policy.as_posix())
+        instruction(root/'CLAUDE.md','@'+shared)
     oc=home/'.config/opencode'
     if oc.exists():
         path=oc/'opencode.jsonc' if (oc/'opencode.jsonc').exists() else oc/'opencode.json'

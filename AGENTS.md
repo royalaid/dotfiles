@@ -17,6 +17,10 @@ Shared conventions live in `~/AGENTS.md`, stored as `home/encrypted_AGENTS.md.ag
 
 Codex and OpenCode entry points are symlink templates. Preserve the links when adding them with `--template-symlinks`. Claude settings remain machine-local and excluded in `home/.chezmoiignore`.
 
+The authorization installer writes `~/.agents/authorization-policy.md`, a home-relative path, into both snapshots, so they are identical on every host. Keep it home-relative: an absolute path makes the other host's apply show drift.
+
+`home/dot_codex/create_config.toml` seeds a fresh host only. Codex rewrites its config constantly (runtime paths, hook hashes, the installer's `auto_review` block), so chezmoi never overwrites or diffs an existing one. Refresh the seed with `chezmoi add` on the `create_` source when a fresh host should start from newer settings.
+
 ## Shell config portability
 
 These configs deploy to macOS as well as Windows/Linux, so anything added to `home/dot_bashrc`, `home/dot_zshrc`, `home/dot_zprofile`, or the fish config has to work against **BSD userland**: avoid GNU-only flags (`head -n -2`, `sed -i` without a backup arg, `date -d`), or guard on `gtail`/`gsed` from coreutils.
