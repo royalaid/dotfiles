@@ -31,7 +31,7 @@ Short imperative subjects, and **no AI co-author / attribution trailers** — fo
 
 ## Rollout
 
-A change reaches a host only when that host's source checkout has it and chezmoi applies it there. Each host keeps its own checkout: the Mac (`bouncehouse`) at `~/.local/share/chezmoi`, the PC (`DESKTOP-O91444G`) at `~/git/dotfiles` (set in `home/.chezmoi.toml.tmpl`). WSL (`desktop-o91444g-wsl`) is a separate host; it gets step 4 too when `command -v chezmoi` finds chezmoi there. Run these steps in order. A step that does not apply to the change is skipped, and the receipt says why. Each step is done when its check passes.
+A change reaches a host only when that host's source checkout has it and chezmoi applies it there. Each host keeps its own checkout: the Mac (`bouncehouse`) at `~/.local/share/chezmoi`, the PC (`DESKTOP-O91444G`) at `~/git/dotfiles` (set in `home/.chezmoi.toml.tmpl`). WSL on the PC is retired as a client host (2026-10-08) and gets no rollout. Run these steps in order. A step that does not apply to the change is skipped, and the receipt says why. Each step is done when its check passes.
 
 `<targets>` below means the deployed paths the change touches. List them from the merged range with `git diff --name-only <old>..<new> -- home/`, then map each with `chezmoi target-path <source file>`.
 
