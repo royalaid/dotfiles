@@ -1,16 +1,29 @@
 {{- /* chezmoi:modify-template */ -}}
 {{- /*
   Claude Code owns ~/.claude/settings.json and rewrites it constantly (plugins,
-  hooks, effort level), so the file stays machine-local. This template pins only
-  the keys below and passes every other key through untouched.
+  hooks, effort level), so the file stays machine-local. This template passes
+  every key through untouched except the one it strips below.
 
-  claude-haiku-5-5 autoCompactWindow: Haiku 5.5 API pricing jumps a tier above
-  100K-token prompts, so compact before crossing it (same value `/autocompact
-  100k` saves under `/model haiku`).
+  Removed 2026-10-08: modelSettings.claude-haiku-5-5.autoCompactWindow (100000).
+  It had pinned Haiku 5.5 to compact at 100K tokens, because the API price steps
+  up above 100K-token prompts. That compaction thrashed a delegated Haiku worker
+  that read a few large files (three compacts in three turns, then the run died),
+  so Royal chose to drop the cap and accept the higher per-token price past 100K.
+  The template now deletes the key so every host converges on the next apply.
+  Delete this template once all hosts have applied it.
 */ -}}
 {{- $settings := dict -}}
 {{- if trim .chezmoi.stdin -}}
 {{-   $settings = fromJson .chezmoi.stdin -}}
 {{- end -}}
-{{- $settings = setValueAtPath "modelSettings.claude-haiku-5-5.autoCompactWindow" 100000 $settings -}}
+{{- if hasKey $settings "modelSettings" -}}
+{{-   $ms := index $settings "modelSettings" -}}
+{{-   if hasKey $ms "claude-haiku-5-5" -}}
+{{-     $h := index $ms "claude-haiku-5-5" -}}
+{{-     $_ := unset $h "autoCompactWindow" -}}
+{{-     if not $h -}}
+{{-       $_ := unset $ms "claude-haiku-5-5" -}}
+{{-     end -}}
+{{-   end -}}
+{{- end -}}
 {{- toPrettyJson $settings }}
