@@ -1,0 +1,91 @@
+# Delegation model policy. Rules: delegation-skills/shared/references/model-policy.md
+# Migrated 2026-09-22 from ~/.agents/offload-models.md (kept until you delete it).
+# 2026-10-01: GPT Sol is the default producer, starting at medium effort. Wallet
+# order is work Codex, then personal Codex. Claude personal is exhausted. Backup: model-policy.toml.bak-20261001.
+schema = 2
+# 2026-10-08: schema 2 role names (orchestrator, executor, light, reviewer, premium).
+# Rules: delegation-skills/shared/references/layered-routing.md. Swap a model with the model-swap skill.
+
+[roles]
+mode = "architect"
+orchestrator = "claude/opus"         # the main agent; reads intent, designs, reviews, integrates
+executor = ["gpt/sol@medium"]        # closed contracts; raise effort one level per miss, to xhigh
+light = "gpt/luna@medium"            # recon and one-shot mechanical edits
+# light = "claude/haiku@medium"      # UNCONFIRMED option (2026-10-08): bills the Claude subscription, marked exhausted above
+reviewer = "glm/flash"               # company LiteLLM review grant, 2026-10-05; parent reviews deliverables too
+# premium: omitted, so each harness adapter's default applies.
+
+[pins]                               # GPT, Claude, and Grok tiers auto-resolve to the newest slug; pin only to hold one back
+"glm/flash" = "fireworks_ai/accounts/fireworks/models/glm-5p3-flash"
+
+# Route order is preference order: the first reachable route for a tier wins.
+[wallets.chatgpt-work]
+kind = "subscription"
+codex_home = "~/.codex-work"         # work ChatGPT login
+
+[wallets.chatgpt]
+kind = "subscription"
+codex_home = "~/.codex"              # personal ChatGPT login
+
+[wallets.claude]
+kind = "subscription"
+
+[wallets.company-litellm]             # company gateway verified 2026-10-05; review grant only
+kind = "metered"
+
+# GPT: CLI through codex exec, work login first, then personal. Native in Codex and OpenCode.
+# No OpenRouter or other metered GPT route.
+[[routes]]
+family = "gpt"
+via = "cli"
+harness = "codex"
+wallet = "chatgpt-work"
+
+[[routes]]
+family = "gpt"
+via = "cli"
+harness = "codex"
+wallet = "chatgpt"
+
+[[routes]]
+family = "gpt"
+via = "native"
+harness = "codex"
+wallet = "chatgpt-work"              # native children bill whichever login the parent Codex runs on
+
+[[routes]]
+family = "gpt"
+via = "native"
+harness = "opencode"
+provider = "openai"
+wallet = "chatgpt"
+
+# Claude: only through Claude Code itself, as a native child or `claude -p`.
+[[routes]]
+family = "claude"
+via = "native"
+harness = "claude-code"
+wallet = "claude"
+
+[[routes]]
+family = "claude"
+via = "cli"
+harness = "claude-code"
+wallet = "claude"
+
+# GLM: exact company gateway and payload scope in authorization-policy.md.
+[[routes]]
+family = "glm"
+via = "native"
+harness = "opencode"
+provider = "litellm"
+wallet = "company-litellm"
+
+[[routes]]
+family = "glm"
+via = "cli"
+harness = "opencode"
+provider = "litellm"
+wallet = "company-litellm"
+
+# Grok: no routes. The old file said "Do not fall back to ... Grok".
