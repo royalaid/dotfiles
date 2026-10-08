@@ -8,10 +8,6 @@
 .config/fish/conf.d/fzf.fish
 .config/fish/conf.d/nvm.fish
 
-# Claude Code rewrites this constantly (enabledPlugins, effortLevel, hooks, marketplaces)
-# — machine-local state, not worth tracking. Managed by Claude Code itself.
-.claude/settings.json
-
 {{ if ne .chezmoi.os "darwin" }}
 # --- non-macOS ---------------------------------------------------------------
 # dot_zshrc and dot_zprofile are macOS-authored: they hardcode /Users/royalaid,

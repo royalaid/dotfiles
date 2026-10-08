@@ -1,0 +1,16 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- /*
+  Claude Code owns ~/.claude/settings.json and rewrites it constantly (plugins,
+  hooks, effort level), so the file stays machine-local. This template pins only
+  the keys below and passes every other key through untouched.
+
+  claude-haiku-5-5 autoCompactWindow: Haiku 5.5 API pricing jumps a tier above
+  100K-token prompts, so compact before crossing it (same value `/autocompact
+  100k` saves under `/model haiku`).
+*/ -}}
+{{- $settings := dict -}}
+{{- if trim .chezmoi.stdin -}}
+{{-   $settings = fromJson .chezmoi.stdin -}}
+{{- end -}}
+{{- $settings = setValueAtPath "modelSettings.claude-haiku-5-5.autoCompactWindow" 100000 $settings -}}
+{{- toPrettyJson $settings }}
