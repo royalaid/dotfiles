@@ -343,7 +343,7 @@ screen_reader_detection_done = true
 gpt-6-astra = 1
 
 [hooks.state.'C:\Users\gwmai\.codex\hooks.json:pre_tool_use:0:0']
-trusted_hash = "sha256:0842361c139ce7cab20aaa112f99e3b365e0491eac1ca51745a33ebf2b76cdd0"
+trusted_hash = "sha256:b3bcb019509838537f1f1cd76da2ae6c748e35b11804afb226ca18c5361519c5"
 
 [hooks.state.'C:\Users\gwmai\.codex\hooks.json:post_tool_use:0:0']
 trusted_hash = "sha256:eb6729ea8ff9892db39afb58601cee48e02abca6321cc4cc327ab0e90a6df2ff"
