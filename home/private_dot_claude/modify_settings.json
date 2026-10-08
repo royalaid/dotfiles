@@ -26,4 +26,25 @@
 {{-     end -}}
 {{-   end -}}
 {{- end -}}
+{{- /*
+  Added 2026-10-08: outbound messages always ask. Scheduled sweeps (inbox-sweep)
+  read Slack and Gmail unattended; an ask rule stops any send there for a human,
+  instead of relying on hooks or the auto-mode classifier.
+*/ -}}
+{{- $ask := list "mcp__plugin_slack_slack__slack_send_message" "mcp__plugin_slack_slack__slack_schedule_message" "Bash(gws gmail users messages send:*)" "Bash(gws gmail users drafts send:*)" -}}
+{{- $perms := dict -}}
+{{- if hasKey $settings "permissions" -}}
+{{-   $perms = index $settings "permissions" -}}
+{{- end -}}
+{{- $cur := list -}}
+{{- if hasKey $perms "ask" -}}
+{{-   $cur = index $perms "ask" -}}
+{{- end -}}
+{{- range $ask -}}
+{{-   if not (has . $cur) -}}
+{{-     $cur = append $cur . -}}
+{{-   end -}}
+{{- end -}}
+{{- $_ := set $perms "ask" $cur -}}
+{{- $_ := set $settings "permissions" $perms -}}
 {{- toPrettyJson $settings }}
