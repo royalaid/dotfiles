@@ -63,7 +63,7 @@ args = ["--from", "semble[mcp]", "semble", "--content", "all"]
 
 [mcp_servers.helium]
 command = 'C:\Program Files\nodejs\node.exe'
-args = ['C:\Users\gwmai\git\helium-mcp\dist\cli.js', "mcp"]
+args = ['C:\Users\gwmai\git\harbor\helium-mcp\dist\cli.js', "mcp"]
 
 [mcp_servers.telepathica]
 command = 'C:\Users\gwmai\.local\bin\telepathica.exe'
