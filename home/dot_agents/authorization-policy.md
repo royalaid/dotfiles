@@ -105,8 +105,12 @@ migration and agent-guard grant channel, 2026-10-09" in Harbor
 docs/authorizations.md, names Telepathica releases, and his own-tools rollout
 default in ~/AGENTS.md asks for releases; together they authorize a release
 when the session's task asks for one, including a Telepathica handoff that
-cites that grant. Read-only checks around a release (git diff, git log, grep,
-`telepathica choir`) stay read-only, also after a denied command.
+cites that grant. Diagnosing a release is not part of the deploy. A command
+that only reads stays read-only before, during, and after a release, whether
+ship was allowed, denied, or failed: `git status`, `log`, `diff`, `show`,
+`branch --show-current`, `rev-parse` and `config --get`; `cat`, `tail`, `grep`
+and `ls` of release logs, the checkout and its hooks directory; and
+`telepathica choir`.
 
 Limits. Message bodies carry task material, status, and results, never
 credentials, secret values, real PII, or production data. `send` and `notify`
