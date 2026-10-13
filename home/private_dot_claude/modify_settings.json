@@ -81,4 +81,4 @@
 {{- end -}}
 {{- $_ := set $perms "allow" $allow -}}
 {{- $_ := set $settings "permissions" $perms -}}
-{{- toPrettyJson $settings }}
+{{- toPrettyJson $settings | trim }}
