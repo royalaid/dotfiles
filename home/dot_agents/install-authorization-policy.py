@@ -85,7 +85,9 @@ def main():
     # Claude's classifier reads allow entries as exceptions to its block rules;
     # each grant that should lift a default block goes here.
     allow=section('Authorized company GLM review')+'\n\n'+section('Telepathica commands')
-    for name in ('.claude','.claude-personal'):
+    # One Claude home per host since 2026-10-13 (the Mac's ~/.claude-personal was
+    # merged into ~/.claude), so a stray recreated personal home is left alone.
+    for name in ('.claude',):
         root=home/name
         if not root.exists(): continue
         path=root/'settings.json'; d=json.loads(path.read_text(encoding='utf-8')) if path.exists() else {}; auto=d.setdefault('autoMode',{})
