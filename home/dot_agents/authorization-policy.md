@@ -93,7 +93,10 @@ escalation: `send`, `notify`, `reply`, `ack`, `inbox`, `thread`, `find`,
 `whoami`, and `archive` (with or without `--undo`) of T3 threads on Royal's
 hosts. Archiving covers threads the agent picked to fit Royal's request (for
 example "archive everything that's done"), several in one loop, because
-`archive --undo` reverses each one.
+`archive --undo` reverses each one. It covers every target form `archive`
+accepts for those threads (T3 thread id, `t3:` or `harness:session@host`
+address, message or delivery id), including a retry of the same threads in
+another form after an error.
 
 `telepathica release ship`, `release signoff`, `release publish`, and
 `release rollback` publish Royal's own tool to Royal's own hosts. They are not
