@@ -22,7 +22,22 @@ multi-file update is not transactional; rerun after an interrupted application.
 The installer embeds the same Markdown in Codex's additive
 `auto_review.extra_policy`, and Claude's top-level `autoMode.environment` with
 `$defaults`. Claude's `allow` entry is extracted from the authorized-review
-section. Shared agent entry points reference the canonical file. Existing
+and "Telepathica commands" sections, since `allow` entries are the classifier's
+exceptions to its soft blocks (External System Writes, Production Deploy).
+Shared agent entry points reference the canonical file.
+
+Two chezmoi-managed rule layers sit beside the adapters for Telepathica's
+commands that carry no message body (`find`, `inbox`, `thread`, `whoami`,
+`ack`, `archive`): `home/private_dot_claude/modify_settings.json` adds
+`permissions.allow` prefix rules (Bash and PowerShell), which Claude resolves
+before the auto-mode classifier, and `home/.chezmoitemplates/telepathica.rules`
+installs a Codex `prefix_rule` allow (outside the sandbox) in `~/.codex/rules`
+and, where it exists, `~/.codex-work/rules`. Codex splits only `bash`/`zsh`/`sh
+-c` scripts for rules, so on Windows, where it wraps commands in `pwsh -Command`,
+Telepathica still reaches the astronomican through sandbox escalation that
+auto-review judges against the policy. `send`, `notify`, `reply`, and
+`release` always go through the classifier or auto-review, which apply the
+policy's payload limits. Existing
 settings, providers, hooks, and deny/ask rules remain intact. Existing unmanaged
 Codex auto-review or OpenCode JSONC instruction/permission settings require
 manual reconciliation; the installer stops rather than overwrite them.

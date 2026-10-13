@@ -80,7 +80,11 @@ def main():
         tomllib.loads(generated)
         put(path,generated)
         instruction(root/'AGENTS.md','Read '+shared+' before provider delegation or remote writes; apply it alongside project gates.')
-    allow=content.split('## Authorized company GLM review\n\n',1)[1].split('\n## Payload',1)[0].strip()
+    def section(title):
+        return content.split('## '+title+'\n\n',1)[1].split('\n## ',1)[0].strip()
+    # Claude's classifier reads allow entries as exceptions to its block rules;
+    # each grant that should lift a default block goes here.
+    allow=section('Authorized company GLM review')+'\n\n'+section('Telepathica commands')
     for name in ('.claude','.claude-personal'):
         root=home/name
         if not root.exists(): continue

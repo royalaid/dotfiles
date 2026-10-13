@@ -46,5 +46,39 @@
 {{-   end -}}
 {{- end -}}
 {{- $_ := set $perms "ask" $cur -}}
+{{- /*
+  Added 2026-10-13: Telepathica's commands that carry no message body run
+  without the auto-mode classifier, which had denied `telepathica archive` as
+  [External System Writes] when Royal's request was general ("archive
+  everything that's done"). send, notify, reply, release and shell loops stay
+  with the classifier, which reads "Telepathica commands" in
+  ~/.agents/authorization-policy.md. The Codex twin is
+  ~/.codex/rules/telepathica.rules.
+*/ -}}
+{{- $tbins := list "telepathica" "telepathica.exe" "telepathica.EXE" "~/.local/bin/telepathica" -}}
+{{- $home := replace "\\" "/" .chezmoi.homeDir -}}
+{{- if eq .chezmoi.os "windows" -}}
+{{-   range $exe := list "telepathica.exe" "telepathica.EXE" -}}
+{{-     $p := printf "%s/.local/bin/%s" $home $exe -}}
+{{-     $tbins = concat $tbins (list $p (replace "/" "\\" $p)) -}}
+{{-   end -}}
+{{- else -}}
+{{-   $tbins = append $tbins (printf "%s/.local/bin/telepathica" $home) -}}
+{{- end -}}
+{{- $allow := list -}}
+{{- if hasKey $perms "allow" -}}
+{{-   $allow = index $perms "allow" -}}
+{{- end -}}
+{{- range $tool := list "Bash" "PowerShell" -}}
+{{-   range $bin := $tbins -}}
+{{-     range $sub := list "find" "inbox" "thread" "whoami" "ack" "archive" -}}
+{{-       $rule := printf "%s(%s %s:*)" $tool $bin $sub -}}
+{{-       if not (has $rule $allow) -}}
+{{-         $allow = append $allow $rule -}}
+{{-       end -}}
+{{-     end -}}
+{{-   end -}}
+{{- end -}}
+{{- $_ := set $perms "allow" $allow -}}
 {{- $_ := set $settings "permissions" $perms -}}
 {{- toPrettyJson $settings }}

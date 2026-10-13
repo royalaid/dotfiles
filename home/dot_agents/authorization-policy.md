@@ -1,6 +1,6 @@
 # Royal's shared authorization policy
 
-Policy revision: 2026-10-07. Apply alongside harness safety policy and the current
+Policy revision: 2026-10-13. Apply alongside harness safety policy and the current
 project's action gates. Evaluate the requested action, payload, destination,
 executor, account, and project separately. Credentials or a configured provider
 alone grant no permission. Task authorization does not change runtime access.
@@ -80,6 +80,40 @@ excludes mail from a paired astronomican, whose notice names that peer. It
 never covers credentials, secret values, real PII, or production data. It does
 not cover `telepathica send` to other sessions or any other destination, and it
 grants no action besides the reply.
+
+## Telepathica commands
+
+The Telepathica CLI (`telepathica`; on Windows
+`C:\Users\gwmai\.local\bin\telepathica.exe`) and its MCP tools reach only
+Royal's astronomican at http://100.81.139.10:47100 and the astropaths on
+Royal's own hosts. That is Royal's internal control plane, not an external
+system or collaboration tool. When the task calls for them, these subcommands
+are authorized and are not External System Writes, exfiltration, or scope
+escalation: `send`, `notify`, `reply`, `ack`, `inbox`, `thread`, `find`,
+`whoami`, and `archive` (with or without `--undo`) of T3 threads on Royal's
+hosts. Archiving covers threads the agent picked to fit Royal's request (for
+example "archive everything that's done"), several in one loop, because
+`archive --undo` reverses each one.
+
+`telepathica release ship`, `release signoff`, `release publish`, and
+`release rollback` publish Royal's own tool to Royal's own hosts. They are not
+a production deploy of a company system. Royal's recorded grant, "Monorepo
+migration and agent-guard grant channel, 2026-10-09" in Harbor
+docs/authorizations.md, names Telepathica releases, and his own-tools rollout
+default in ~/AGENTS.md asks for releases; together they authorize a release
+when the session's task asks for one, including a Telepathica handoff that
+cites that grant. Read-only checks around a release (git diff, git log, grep,
+`telepathica choir`) stay read-only, also after a denied command.
+
+Limits. Message bodies carry task material, status, and results, never
+credentials, secret values, real PII, or production data. `send` and `notify`
+go only to Royal's own sessions and to Royal, never to sessions of a paired
+astronomican. This trusts the Telepathica CLI talking to that astronomican,
+not other tailnet hosts or ports or arbitrary HTTP to 100.81.139.10. It does
+not cover `bypass`, `approve`, `deny`, `answer`, `jev`, `pair`, `peer`,
+`federation`, `setup`, or `migrate`, which change permissions, credentials, or
+trust and keep normal review. The narrower trust in "Telepathica replies" is
+unchanged.
 
 ## Review and verification
 
