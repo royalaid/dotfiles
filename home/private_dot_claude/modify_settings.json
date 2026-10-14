@@ -30,8 +30,10 @@
   Added 2026-10-08: outbound messages always ask. Scheduled sweeps (inbox-sweep)
   read Slack and Gmail unattended; an ask rule stops any send there for a human,
   instead of relying on hooks or the auto-mode classifier.
+  Added 2026-10-14: work Slack moved to Composio (slack-composio skill), so its
+  send, schedule, upload and reaction slugs, and composio proxy and run, ask too.
 */ -}}
-{{- $ask := list "mcp__plugin_slack_slack__slack_send_message" "mcp__plugin_slack_slack__slack_schedule_message" "Bash(gws gmail users messages send:*)" "Bash(gws gmail users drafts send:*)" -}}
+{{- $ask := list "mcp__plugin_slack_slack__slack_send_message" "mcp__plugin_slack_slack__slack_schedule_message" "Bash(gws gmail users messages send:*)" "Bash(gws gmail users drafts send:*)" "Bash(composio execute SLACK_SEND_MESSAGE:*)" "Bash(composio execute SLACK_CHAT_POST_MESSAGE:*)" "Bash(composio execute SLACK_SEND_ME_MESSAGE:*)" "Bash(composio execute SLACK_SEND_EPHEMERAL_MESSAGE:*)" "Bash(composio execute SLACK_SCHEDULE_MESSAGE:*)" "Bash(composio execute SLACK_UPLOAD_OR_CREATE_A_FILE_IN_SLACK:*)" "Bash(composio execute SLACK_ADD_REACTION_TO_AN_ITEM:*)" "Bash(composio proxy:*)" "Bash(composio run:*)" -}}
 {{- $perms := dict -}}
 {{- if hasKey $settings "permissions" -}}
 {{-   $perms = index $settings "permissions" -}}
