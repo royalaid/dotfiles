@@ -1,6 +1,6 @@
 # Royal's shared authorization policy
 
-Policy revision: 2026-10-13. Apply alongside harness safety policy and the current
+Policy revision: 2026-10-14. Apply alongside harness safety policy and the current
 project's action gates. Evaluate the requested action, payload, destination,
 executor, account, and project separately. Credentials or a configured provider
 alone grant no permission. Task authorization does not change runtime access.
@@ -47,6 +47,21 @@ separate go requests. This policy grants no production actions or unrelated
 company deployment or outward communication. Personal-tooling shipping uses its
 existing bounded authorization; company workspace publication keeps its own
 gates. Preserve agent-guard hooks and existing hard deny/ask controls.
+
+Teammates' work in infinituspay-meta. Royal (Mark Aiken), Moiz Ahmed and Nick
+Saponaro agreed on 14 Oct 2026 that their agents may take work off each
+other's plates in Pods 3 and 4, so the work moves faster. Royal's agents may
+take over, reassign, re-scope, split, merge as duplicates, reopen and close
+Linear tickets that Moiz or Nick own, and comment on them, without a heads-up
+or a prior check with the owner. Their agents hold the same grant over Royal's
+tickets. Tag an owner only when they owe an answer or a decision; do not route
+a ticket move, a status change or a duplicate merge through Nick, Moiz or
+Illia first. On a live collision, where the owner's agent is working the same
+ticket, branch or MR right now, back off, leave a comment, and take the next
+item. The grant covers Linear and Royal's own branches and MRs. It does not
+cover pushing to another person's branch, merging another person's MR, Slack
+sends, or the other gates above. Work owned by people outside those three, or
+by other teams, keeps the normal path.
 
 ## Authorization provenance
 
