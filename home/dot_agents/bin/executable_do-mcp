@@ -9,4 +9,7 @@ if [ -z "$DIGITALOCEAN_API_TOKEN" ]; then
   exit 1
 fi
 export DIGITALOCEAN_API_TOKEN
+# Run npx outside the home tree: npm enforces devEngines from any package.json
+# above the cwd, so a stray ~/package.json could make npx exit.
+cd /
 exec npx -y @digitalocean/mcp@1 --services "${DO_MCP_SERVICES:-droplets,networking,accounts,volumes,docs}"
