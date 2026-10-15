@@ -1,0 +1,12 @@
+#!/bin/sh
+# DigitalOcean MCP server (stdio). The token comes from doctl's current auth
+# context at launch, so it is never stored in an MCP client's config.
+# Override the service list with DO_MCP_SERVICES. Windows twin: do-mcp.cmd.
+set -eu
+DIGITALOCEAN_API_TOKEN="$(doctl auth token 2>/dev/null || true)"
+if [ -z "$DIGITALOCEAN_API_TOKEN" ]; then
+  echo "do-mcp: doctl is not logged in on this host; run: doctl auth init" >&2
+  exit 1
+fi
+export DIGITALOCEAN_API_TOKEN
+exec npx -y @digitalocean/mcp@1 --services "${DO_MCP_SERVICES:-droplets,networking,accounts,volumes,docs}"

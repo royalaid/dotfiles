@@ -53,3 +53,10 @@
 .tmux.conf
 install-fish-plugins.sh
 {{ end }}
+
+# DigitalOcean MCP wrapper: one per OS family.
+{{ if eq .chezmoi.os "windows" }}
+.agents/bin/do-mcp
+{{ else }}
+.agents/bin/do-mcp.cmd
+{{ end }}
