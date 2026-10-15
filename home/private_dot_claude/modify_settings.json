@@ -34,6 +34,15 @@
   send, schedule, upload and reaction slugs, and composio proxy and run, ask too.
 */ -}}
 {{- $ask := list "mcp__plugin_slack_slack__slack_send_message" "mcp__plugin_slack_slack__slack_schedule_message" "Bash(gws gmail users messages send:*)" "Bash(gws gmail users drafts send:*)" "Bash(composio execute SLACK_SEND_MESSAGE:*)" "Bash(composio execute SLACK_CHAT_POST_MESSAGE:*)" "Bash(composio execute SLACK_SEND_ME_MESSAGE:*)" "Bash(composio execute SLACK_SEND_EPHEMERAL_MESSAGE:*)" "Bash(composio execute SLACK_SCHEDULE_MESSAGE:*)" "Bash(composio execute SLACK_UPLOAD_OR_CREATE_A_FILE_IN_SLACK:*)" "Bash(composio execute SLACK_ADD_REACTION_TO_AN_ITEM:*)" "Bash(composio proxy:*)" "Bash(composio run:*)" -}}
+{{- /*
+  Added 2026-10-14: the Ramp MCP (server "ramp", FISI Development) asks before
+  every tool that changes state; the list is .chezmoidata/ramp.yaml. Both name
+  forms are listed until the live tool names are confirmed after OAuth.
+*/ -}}
+{{- range .ramp.writeTools -}}
+{{-   $ask = append $ask (printf "mcp__ramp__%s" .) -}}
+{{-   $ask = append $ask (printf "mcp__ramp__%s" (trimPrefix "ramp_" .)) -}}
+{{- end -}}
 {{- $perms := dict -}}
 {{- if hasKey $settings "permissions" -}}
 {{-   $perms = index $settings "permissions" -}}
