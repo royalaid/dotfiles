@@ -10,4 +10,7 @@ if not defined DIGITALOCEAN_API_TOKEN (
   exit /b 1
 )
 if not defined DO_MCP_SERVICES set "DO_MCP_SERVICES=droplets,networking,accounts,volumes,docs"
+rem Run npx outside the home tree: npm enforces devEngines from any package.json
+rem above the cwd, and a stray ~/package.json pinning bun makes npx exit.
+cd /d "%SystemDrive%\"
 npx -y @digitalocean/mcp@1 --services %DO_MCP_SERVICES%
