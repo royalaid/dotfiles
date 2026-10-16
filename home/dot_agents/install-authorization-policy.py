@@ -25,6 +25,31 @@ def managed(text, start, end, body):
         return re.sub(re.escape(start)+r'.*?'+re.escape(end),lambda _:block,text,flags=re.S)
     return text.rstrip()+'\n\n'+block+'\n'
 
+def adopt_orphan_auto_review(text):
+    # Codex rewrites config.toml when it saves its own settings and drops the
+    # marker comments, leaving our generated table unmanaged. Remove it only
+    # when it is plainly ours: the sole key is a policy text, and the rest of
+    # the file parses to exactly what it held before.
+    before=tomllib.loads(text); table=before.get('auto_review')
+    if not (isinstance(table,dict) and set(table)=={'extra_policy'}
+            and str(table['extra_policy']).startswith("# Royal's shared authorization policy")):
+        return text
+    m=re.search(r'^\[auto_review\][ \t]*\r?\n',text,re.M)
+    if not m: return text
+    want={k:v for k,v in before.items() if k!='auto_review'}
+    head=text[:m.start()].rstrip()
+    # The table ends at the next header line or at end of file; a '[' line
+    # inside the policy string fails the parse check and is skipped.
+    ends=[m.end()+x.start() for x in re.finditer(r'^\[',text[m.end():],re.M)]+[len(text)]
+    for b in ends:
+        tail=text[b:]
+        cut=(head+'\n\n'+tail if tail else head+'\n') if head else tail
+        try:
+            if tomllib.loads(cut)==want: return cut
+        except tomllib.TOMLDecodeError:
+            pass
+    return text
+
 def object_start(text):
     # Skip JSONC leading comments rather than selecting a brace inside one.
     i=0
@@ -73,10 +98,12 @@ def main():
         root=home/name; path=root/'config.toml'
         if not path.exists(): continue
         old=path.read_text(encoding='utf-8'); stripped=remove_block(old,TSTART,TEND)
+        if TSTART not in old:
+            stripped=adopt_orphan_auto_review(stripped)
         if 'auto_review' in tomllib.loads(stripped):
             raise ValueError(str(path)+': reconcile unmanaged auto_review first')
         block='[auto_review]\nextra_policy = '+json.dumps(content,ensure_ascii=False)
-        generated=managed(old,TSTART,TEND,block)
+        generated=managed(old if TSTART in old else stripped,TSTART,TEND,block)
         tomllib.loads(generated)
         put(path,generated)
         instruction(root/'AGENTS.md','Read '+shared+' before provider delegation or remote writes; apply it alongside project gates.')
