@@ -84,7 +84,7 @@ def main():
         return content.split('## '+title+'\n\n',1)[1].split('\n## ',1)[0].strip()
     # Claude's classifier reads allow entries as exceptions to its block rules;
     # each grant that should lift a default block goes here.
-    allow=section('Authorized company GLM review')+'\n\n'+section('Telepathica commands')
+    allow='\n\n'.join(section(t) for t in ('Authorized company GLM review',"Royal's GitHub repositories",'Telepathica commands'))
     # One Claude home per host since 2026-10-13 (the Mac's ~/.claude-personal was
     # merged into ~/.claude), so a stray recreated personal home is left alone.
     for name in ('.claude',):

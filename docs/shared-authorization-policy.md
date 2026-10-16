@@ -21,9 +21,10 @@ multi-file update is not transactional; rerun after an interrupted application.
 
 The installer embeds the same Markdown in Codex's additive
 `auto_review.extra_policy`, and Claude's top-level `autoMode.environment` with
-`$defaults`. Claude's `allow` entry is extracted from the authorized-review
-and "Telepathica commands" sections, since `allow` entries are the classifier's
-exceptions to its soft blocks (External System Writes, Production Deploy).
+`$defaults`. Claude's `allow` entry is extracted from the authorized-review,
+"Royal's GitHub repositories" and "Telepathica commands" sections, since
+`allow` entries are the classifier's exceptions to its soft blocks (External
+System Writes, Create Public Surface, Production Deploy).
 Shared agent entry points reference the canonical file.
 
 Two chezmoi-managed rule layers sit beside the adapters for Telepathica's

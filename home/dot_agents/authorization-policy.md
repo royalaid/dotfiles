@@ -1,6 +1,6 @@
 # Royal's shared authorization policy
 
-Policy revision: 2026-10-14. Apply alongside harness safety policy and the current
+Policy revision: 2026-10-16. Apply alongside harness safety policy and the current
 project's action gates. Evaluate the requested action, payload, destination,
 executor, account, and project separately. Credentials or a configured provider
 alone grant no permission. Task authorization does not change runtime access.
@@ -62,6 +62,30 @@ item. The grant covers Linear and Royal's own branches and MRs. It does not
 cover pushing to another person's branch, merging another person's MR, Slack
 sends, or the other gates above. Work owned by people outside those three, or
 by other teams, keeps the normal path.
+
+## Royal's GitHub repositories
+
+Royal's own GitHub repositories live under the user account github.com/royalaid
+and the organization github.com/Fisi-Development, where Royal is an admin.
+These moved from royalaid to Fisi-Development and are still Royal's own:
+harbor, agent-mailbox (Telepathica), agent-traces, dotfiles, slop,
+fc-vid-uploader, leet-code-fixer and vox_populi, and the forks codex,
+hermes-agent and t3code. Their github.com/royalaid/<name> URLs redirect to the
+new home. A grant, standing authorization or Rollout step that names a royalaid
+repository, or Royal's own repositories in general, covers the same repository
+under Fisi-Development; moving a repository between the two owners changes
+nothing.
+
+When the task calls for it, in these repositories: push commits without force
+to the agent's own branches, and to the default branch where the repository's
+agent instructions allow direct integration; open and update pull requests;
+merge them with the method the repository's AGENTS.md Rollout names; and
+delete the merged branch.
+
+Limits. This does not cover a force push to a default branch, deleting,
+transferring or renaming a repository, changing its visibility, settings or
+branch protection, or Fisi-Development repositories that did not come from
+royalaid. Company repositories keep their own gates.
 
 ## Authorization provenance
 
