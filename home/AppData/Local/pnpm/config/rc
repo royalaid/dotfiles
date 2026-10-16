@@ -1,0 +1,3 @@
+store-dir=C:\Users\gwmai\git\.stores\pnpm
+package-import-method=clone-or-copy
+confirm-modules-purge=false

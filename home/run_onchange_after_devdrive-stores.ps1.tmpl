@@ -1,0 +1,6 @@
+{{- /* Dev Drive package-store variables; empty (so chezmoi skips it) off DESKTOP-O91444G. */ -}}
+{{- if and (eq .chezmoi.os "windows") (eq .chezmoi.hostname "DESKTOP-O91444G") -}}
+# Re-runs when this file changes.
+[Environment]::SetEnvironmentVariable('BUN_INSTALL_CACHE_DIR', 'C:\Users\gwmai\git\.stores\bun', 'User')
+[Environment]::SetEnvironmentVariable('UV_CACHE_DIR', 'C:\Users\gwmai\git\.stores\uv', 'User')
+{{ end -}}

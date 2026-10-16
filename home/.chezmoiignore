@@ -60,3 +60,10 @@ install-fish-plugins.sh
 {{ else }}
 .agents/bin/do-mcp.cmd
 {{ end }}
+
+# Dev Drive package stores: only DESKTOP-O91444G has the Dev Drive (~/git/.stores).
+# On plain NTFS clone-or-copy is slower than pnpm's default, so every other host
+# (Mercury, the Mac) gets neither the pnpm rc nor the store environment script.
+{{ if ne .chezmoi.hostname "DESKTOP-O91444G" }}
+AppData/Local/pnpm
+{{ end }}
