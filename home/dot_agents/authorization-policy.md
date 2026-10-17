@@ -94,9 +94,11 @@ by configuration, for every harness and repository: Telepathica handoffs, T3
 threads and delegated tasks, and native subagents.
 
 - Full access on a host where agent-guard is installed and current, meaning the
-  installed binary reports the newest released `agent-guard-v*` version.
-  agent-guard then checks every tool call the session makes, and its rules hold
-  in every mode.
+  installed binary reports the newest released `agent-guard-v*` version, for
+  each harness agent-guard checks. agent-guard then checks every tool call the
+  session makes, and its rules hold in every mode. Today it hooks Claude Code
+  only; Codex and OpenCode keep the mode their host's config already sets until
+  agent-guard covers them.
 - Auto on every other host, and wherever the guard's version cannot be read.
 
 A launch takes the mode of the host it runs on.
