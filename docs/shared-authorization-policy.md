@@ -20,12 +20,25 @@ swap against an uncooperative editor in the final check/replace interval. The
 multi-file update is not transactional; rerun after an interrupted application.
 
 The installer embeds the same Markdown in Codex's additive
-`auto_review.extra_policy`, and Claude's top-level `autoMode.environment` with
-`$defaults`. Claude's `allow` entry is extracted from the authorized-review,
-"Royal's GitHub repositories" and "Telepathica commands" sections, since
-`allow` entries are the classifier's exceptions to its soft blocks (External
-System Writes, Create Public Surface, Production Deploy).
+`auto_review.extra_policy` after a fixed authorization preamble, and Claude's
+top-level `autoMode.environment` with `$defaults`. Claude's `allow` entry is
+extracted from the authorized-review, "Royal's GitHub repositories",
+"Telepathica commands" and "Launch modes" sections, since `allow` entries are
+the classifier's exceptions to its soft blocks (External System Writes,
+Create Public Surface, Production Deploy).
 Shared agent entry points reference the canonical file.
+
+The installer writes `t3_runtime_modes` from the agent-guard current check into
+`~/.telepathica/config.json`, or `~/.agent-mailbox/config.json` when only that
+file exists. Only harnesses agent-guard hooks follow the check (Claude today);
+it leaves the Codex and OpenCode entries as they are. It prints only that map
+from the config and keeps no backup copy of that file, which holds the hub
+token. `--guard-bin` and `--skills` are refused for the real home. An astropath from
+Telepathica agent-mailbox#146 on re-reads the map each scan; an older one
+needs a restart. The guard counts as current only when `gh api` lists the
+`agent-guard-v*` release tags of `royalaid/skills` (never the checkout's own
+remote, which anything writing the checkout can repoint); without that answer
+the mode is auto.
 
 Two chezmoi-managed rule layers sit beside the adapters for Telepathica's
 commands that carry no message body (`find`, `inbox`, `thread`, `whoami`,

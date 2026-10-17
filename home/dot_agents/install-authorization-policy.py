@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Generate additive adapters from the canonical policy; preview by default."""
-import argparse, hashlib, json, os, pathlib, re, shutil, tempfile, tomllib
+import argparse, hashlib, json, os, pathlib, re, shutil, subprocess, tempfile, tomllib
 
 START = '<!-- shared-authorization-policy:start -->'
 END = '<!-- shared-authorization-policy:end -->'
@@ -8,6 +8,55 @@ TSTART = '# shared-authorization-policy:start'
 TEND = '# shared-authorization-policy:end'
 JSTART = '// shared-authorization-policy:start'
 JEND = '// shared-authorization-policy:end'
+PREAMBLE = "# Royal's shared authorization policy (Codex auto-review)\n\nRoyal wrote this policy and installs it himself. Its grants are his standing authorization, given in advance: an action a grant covers needs no repeated approval in the transcript. Its limits, the Launch modes section and project gates still apply, and an action no grant covers gets your normal judgment.\n\n"
+GUARD_PATHS = (
+    pathlib.Path('/Library/Application Support/ClaudeCode/agent-guard/agent-guard'),
+    pathlib.Path(r'C:\Program Files\ClaudeCode\agent-guard\agent-guard.exe'),
+    pathlib.Path('/etc/claude-code/agent-guard/agent-guard'),
+)
+# agent-guard hooks only Claude Code's PreToolUse (agent-guard SKILL.md, "Harness
+# coverage"), so only Claude follows the guard check. Codex and OpenCode keep the
+# mode their host config already sets: full access there has no per-action gate.
+GUARDED_HARNESSES = ('claude',)
+RELEASE_REPO = 'royalaid/skills'  # agent-guard releases (skills/agent-guard/references/rollout.md)
+
+def read_exact(path):
+    with path.open(encoding='utf-8',newline='') as f:
+        return f.read()
+
+def agent_guard_status(skills, guard_bin=None, fixture=False):
+    installed=latest=None
+    binary=guard_bin if guard_bin is not None else next((p for p in GUARD_PATHS if p.exists()),None)
+    if binary is not None:
+        try:
+            result=subprocess.run([str(binary),'--version'],capture_output=True,text=True,timeout=10,check=True)
+            match=re.fullmatch(r'agent-guard (\d+)\.(\d+)\.(\d+)',result.stdout.strip())
+            if match: installed=tuple(map(int,match.groups()))
+        except (OSError,subprocess.SubprocessError,UnicodeError):
+            pass
+    # Local tags can be deleted, and the checkout's remote and git config can be
+    # rewritten, by anything that writes the checkout. So the release list comes
+    # from the release repository through gh's own login; local tags can only add
+    # versions, which makes the check stricter. Without that answer the guard does
+    # not count as current. A fixture home reads its fixture checkout's origin.
+    tag=r'(?:refs/tags/)?agent-guard-v(\d+)\.(\d+)\.(\d+)'
+    released=(['git','-C',str(skills),'ls-remote','--tags','origin','agent-guard-v*'] if fixture else
+              ['gh','api','repos/'+RELEASE_REPO+'/git/matching-refs/tags/agent-guard-v','--jq','.[].ref'])
+    versions,remote=[],False
+    for command in (['git','-C',str(skills),'tag','-l','agent-guard-v*'],released):
+        try:
+            result=subprocess.run(command,capture_output=True,text=True,timeout=20,check=True)
+        except (OSError,subprocess.SubprocessError,UnicodeError):
+            continue
+        found=[tuple(map(int,m.groups())) for line in result.stdout.splitlines()
+               if (m:=re.fullmatch(tag,line.split('\t')[-1]))]
+        remote=remote or (command is released and bool(found))
+        versions+=found
+    if versions: latest=max(versions)
+    return {'installed':'.'.join(map(str,installed)) if installed is not None else None,
+            'latest':'.'.join(map(str,latest)) if latest is not None else None,
+            'origin_checked':remote,
+            'current':remote and installed is not None and latest is not None and installed>=latest}
 
 def remove_block(text, start, end):
     if start not in text and end not in text: return text
@@ -73,27 +122,52 @@ def atomic_write(path,text,expected):
         with os.fdopen(fd,'w',encoding='utf-8',newline='') as f:
             f.write(text); f.flush(); os.fsync(f.fileno())
         if path.exists(): shutil.copymode(path,tmp)
-        current=path.read_text(encoding='utf-8') if path.exists() else None
+        current=read_exact(path) if path.exists() else None
         if current!=expected: raise ValueError(str(path)+': concurrent edit before replacement')
         os.replace(tmp,path)
     finally:
         if os.path.exists(tmp): os.unlink(tmp)
 
 def main():
-    p=argparse.ArgumentParser(); p.add_argument('--home',type=pathlib.Path,default=pathlib.Path.home()); p.add_argument('--apply',action='store_true'); args=p.parse_args()
+    p=argparse.ArgumentParser(); p.add_argument('--home',type=pathlib.Path,default=pathlib.Path.home()); p.add_argument('--apply',action='store_true')
+    p.add_argument('--guard-bin',type=pathlib.Path); p.add_argument('--skills',type=pathlib.Path); args=p.parse_args()
+    # The overrides exist for fixture homes; on the real home they could fake a current guard.
+    if (args.guard_bin or args.skills) and args.home.resolve()==pathlib.Path.home().resolve():
+        p.error('--guard-bin and --skills are only for a fixture --home')
     home=args.home.resolve(); policy=home/'.agents/authorization-policy.md'; content=policy.read_text(encoding='utf-8'); digest=hashlib.sha256(content.encode()).hexdigest()
     # Instruction files are chezmoi snapshots shared by every host, so they name
     # the policy by a home-relative path; an absolute one drifts per host.
     shared='~/.agents/authorization-policy.md'
     statepath=home/'.agents/authorization-adapter-state.json'
+    nobackup=set()  # Files holding credentials get no plaintext backup copy.
     state=json.loads(statepath.read_text(encoding='utf-8')) if statepath.exists() else {}; nextstate={}; planned={}
     def put(path,text):
-        path=path.resolve(); old=path.read_text(encoding='utf-8') if path.exists() else None
+        path=path.resolve(); old=read_exact(path) if path.exists() else None
         if path in planned and planned[path][1]!=text: raise ValueError('conflicting symlink targets')
         if old!=text: planned[path]=(old,text)
     def instruction(path,body):
         old=path.read_text(encoding='utf-8') if path.exists() else ''
         put(path,managed(old,START,END,body))
+    guard=agent_guard_status(args.skills if args.skills is not None else home/'git/skills',args.guard_bin,
+                             fixture=home!=pathlib.Path.home().resolve())
+    mode='full-access' if guard['current'] else 'auto'
+    telepathica={'path':None,'before':None,'after':None}
+    for path in (home/'.telepathica/config.json',home/'.agent-mailbox/config.json'):
+        if not path.exists(): continue
+        old=read_exact(path)
+        try: d=json.loads(old)
+        except ValueError as e: raise ValueError(str(path)+': not valid JSON ('+e.__class__.__name__+')') from None
+        before=d.get('t3_runtime_modes') if isinstance(d,dict) else None
+        if not isinstance(d,dict) or not isinstance(before,(dict,type(None))):
+            raise ValueError(str(path)+': reconcile a non-object config or t3_runtime_modes first')
+        modes=d.setdefault('t3_runtime_modes',{})
+        before=dict(before) if before is not None else None
+        for harness in GUARDED_HARNESSES: modes[harness]=mode
+        generated=json.dumps(d,indent=2)
+        if '\r\n' in old: generated=generated.replace('\n','\r\n')
+        put(path,generated); nobackup.add(path.resolve())
+        telepathica={'path':str(path),'before':before,'after':dict(modes)}
+        break
     for name in ('.codex','.codex-work'):
         root=home/name; path=root/'config.toml'
         if not path.exists(): continue
@@ -102,16 +176,17 @@ def main():
             stripped=adopt_orphan_auto_review(stripped)
         if 'auto_review' in tomllib.loads(stripped):
             raise ValueError(str(path)+': reconcile unmanaged auto_review first')
-        block='[auto_review]\nextra_policy = '+json.dumps(content,ensure_ascii=False)
+        block='[auto_review]\nextra_policy = '+json.dumps(PREAMBLE+content,ensure_ascii=False)
         generated=managed(old if TSTART in old else stripped,TSTART,TEND,block)
         tomllib.loads(generated)
         put(path,generated)
         instruction(root/'AGENTS.md','Read '+shared+' before provider delegation or remote writes; apply it alongside project gates.')
     def section(title):
+        if '## '+title+'\n\n' not in content: raise ValueError(str(policy)+': policy lacks section '+title+'; apply the matching policy first')
         return content.split('## '+title+'\n\n',1)[1].split('\n## ',1)[0].strip()
     # Claude's classifier reads allow entries as exceptions to its block rules;
     # each grant that should lift a default block goes here.
-    allow='\n\n'.join(section(t) for t in ('Authorized company GLM review',"Royal's GitHub repositories",'Telepathica commands'))
+    allow='\n\n'.join(section(t) for t in ('Authorized company GLM review',"Royal's GitHub repositories",'Telepathica commands','Launch modes'))
     # One Claude home per host since 2026-10-13 (the Mac's ~/.claude-personal was
     # merged into ~/.claude), so a stray recreated personal home is left alone.
     for name in ('.claude',):
@@ -154,15 +229,16 @@ def main():
             for url in urls: web.setdefault(url,'ask')  # Preserve existing deny/ask/allow.
             put(path,json.dumps(d,indent=2,ensure_ascii=False)+'\n')
     put(statepath,json.dumps(nextstate,indent=2,ensure_ascii=False)+'\n')
-    print(json.dumps({'policy_sha256':digest,'apply':args.apply,'changed_paths':[str(x) for x in planned]}))
+    print(json.dumps({'policy_sha256':digest,'apply':args.apply,'changed_paths':[str(x) for x in planned],
+                      'agent_guard':guard,'launch_mode':mode,'guarded_harnesses':list(GUARDED_HARNESSES),'telepathica':telepathica}))
     if args.apply:
         # Reject concurrent edits before writing any file. Each replacement is atomic;
         # the multi-file update is not a transaction. Rerun to finish interrupted installs.
         for path,(old,new) in planned.items():
-            current=path.read_text(encoding='utf-8') if path.exists() else None
+            current=read_exact(path) if path.exists() else None
             if current!=old: raise ValueError(str(path)+': changed since preview')
         for path,(old,new) in planned.items():
-            if path.exists():
+            if path.exists() and path not in nobackup:
                 backup=path.with_name(path.name+'.before-shared-authorization')
                 if not backup.exists(): shutil.copy2(path,backup)
             atomic_write(path,new,old)
