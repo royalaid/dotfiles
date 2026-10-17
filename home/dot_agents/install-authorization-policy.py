@@ -33,16 +33,25 @@ def agent_guard_status(skills, guard_bin=None):
             if match: installed=tuple(map(int,match.groups()))
         except (OSError,subprocess.SubprocessError,UnicodeError):
             pass
-    try:
-        result=subprocess.run(['git','-C',str(skills),'tag','-l','agent-guard-v*'],capture_output=True,text=True,timeout=10,check=True)
-        versions=[tuple(map(int,m.groups())) for tag in result.stdout.splitlines()
-                  if (m:=re.fullmatch(r'agent-guard-v(\d+)\.(\d+)\.(\d+)',tag))]
-        if versions: latest=max(versions)
-    except (OSError,subprocess.SubprocessError,UnicodeError):
-        pass
+    # Local tags can be deleted by anything that writes the checkout, and a pull
+    # does not bring them back, so the release list is also read from origin.
+    # Without an answer from origin the guard does not count as current.
+    tag=r'(?:refs/tags/)?agent-guard-v(\d+)\.(\d+)\.(\d+)'
+    versions,remote=[],False
+    for command in (['tag','-l','agent-guard-v*'],['ls-remote','--tags','origin','agent-guard-v*']):
+        try:
+            result=subprocess.run(['git','-C',str(skills),*command],capture_output=True,text=True,timeout=20,check=True)
+        except (OSError,subprocess.SubprocessError,UnicodeError):
+            continue
+        found=[tuple(map(int,m.groups())) for line in result.stdout.splitlines()
+               if (m:=re.fullmatch(tag,line.split('\t')[-1]))]
+        remote=remote or (command[0]=='ls-remote' and bool(found))
+        versions+=found
+    if versions: latest=max(versions)
     return {'installed':'.'.join(map(str,installed)) if installed is not None else None,
             'latest':'.'.join(map(str,latest)) if latest is not None else None,
-            'current':installed is not None and latest is not None and installed>=latest}
+            'origin_checked':remote,
+            'current':remote and installed is not None and latest is not None and installed>=latest}
 
 def remove_block(text, start, end):
     if start not in text and end not in text: return text
@@ -139,8 +148,12 @@ def main():
     telepathica={'path':None,'before':None,'after':None}
     for path in (home/'.telepathica/config.json',home/'.agent-mailbox/config.json'):
         if not path.exists(): continue
-        old=read_exact(path); d=json.loads(old)
-        before=d.get('t3_runtime_modes')
+        old=read_exact(path)
+        try: d=json.loads(old)
+        except ValueError as e: raise ValueError(str(path)+': not valid JSON ('+e.__class__.__name__+')') from None
+        before=d.get('t3_runtime_modes') if isinstance(d,dict) else None
+        if not isinstance(d,dict) or not isinstance(before,(dict,type(None))):
+            raise ValueError(str(path)+': reconcile a non-object config or t3_runtime_modes first')
         modes=d.setdefault('t3_runtime_modes',{})
         before=dict(before) if before is not None else None
         for harness in GUARDED_HARNESSES: modes[harness]=mode
@@ -163,6 +176,7 @@ def main():
         put(path,generated)
         instruction(root/'AGENTS.md','Read '+shared+' before provider delegation or remote writes; apply it alongside project gates.')
     def section(title):
+        if '## '+title+'\n\n' not in content: raise ValueError(str(policy)+': policy lacks section '+title+'; apply the matching policy first')
         return content.split('## '+title+'\n\n',1)[1].split('\n## ',1)[0].strip()
     # Claude's classifier reads allow entries as exceptions to its block rules;
     # each grant that should lift a default block goes here.

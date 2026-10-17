@@ -113,8 +113,10 @@ delegation, not a permission bypass.
 For the classifiers: launching a native subagent for the task in the parent's
 own mode is not Auto-Mode Bypass. A Telepathica handoff or T3 thread that its
 host's configuration starts in full access, on a host where agent-guard is
-current, is not Create Unsafe Agents: agent-guard is a per-action gate on every
-tool call that session makes.
+current, is not Create Unsafe Agents when it runs a harness agent-guard checks
+(Claude Code today): agent-guard is then a per-action gate on every tool call
+that session makes. A full-access Codex or OpenCode session has no such gate,
+and this sentence does not cover it.
 
 Limits. The mode comes from configuration, never from the agent. An agent does
 not raise its own mode or a running child's, does not add bypass or
