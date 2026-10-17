@@ -18,12 +18,13 @@ GUARD_PATHS = (
 # coverage"), so only Claude follows the guard check. Codex and OpenCode keep the
 # mode their host config already sets: full access there has no per-action gate.
 GUARDED_HARNESSES = ('claude',)
+RELEASE_REPO = 'royalaid/skills'  # agent-guard releases (skills/agent-guard/references/rollout.md)
 
 def read_exact(path):
     with path.open(encoding='utf-8',newline='') as f:
         return f.read()
 
-def agent_guard_status(skills, guard_bin=None):
+def agent_guard_status(skills, guard_bin=None, fixture=False):
     installed=latest=None
     binary=guard_bin if guard_bin is not None else next((p for p in GUARD_PATHS if p.exists()),None)
     if binary is not None:
@@ -33,19 +34,23 @@ def agent_guard_status(skills, guard_bin=None):
             if match: installed=tuple(map(int,match.groups()))
         except (OSError,subprocess.SubprocessError,UnicodeError):
             pass
-    # Local tags can be deleted by anything that writes the checkout, and a pull
-    # does not bring them back, so the release list is also read from origin.
-    # Without an answer from origin the guard does not count as current.
+    # Local tags can be deleted, and the checkout's remote and git config can be
+    # rewritten, by anything that writes the checkout. So the release list comes
+    # from the release repository through gh's own login; local tags can only add
+    # versions, which makes the check stricter. Without that answer the guard does
+    # not count as current. A fixture home reads its fixture checkout's origin.
     tag=r'(?:refs/tags/)?agent-guard-v(\d+)\.(\d+)\.(\d+)'
+    released=(['git','-C',str(skills),'ls-remote','--tags','origin','agent-guard-v*'] if fixture else
+              ['gh','api','repos/'+RELEASE_REPO+'/git/matching-refs/tags/agent-guard-v','--jq','.[].ref'])
     versions,remote=[],False
-    for command in (['tag','-l','agent-guard-v*'],['ls-remote','--tags','origin','agent-guard-v*']):
+    for command in (['git','-C',str(skills),'tag','-l','agent-guard-v*'],released):
         try:
-            result=subprocess.run(['git','-C',str(skills),*command],capture_output=True,text=True,timeout=20,check=True)
+            result=subprocess.run(command,capture_output=True,text=True,timeout=20,check=True)
         except (OSError,subprocess.SubprocessError,UnicodeError):
             continue
         found=[tuple(map(int,m.groups())) for line in result.stdout.splitlines()
                if (m:=re.fullmatch(tag,line.split('\t')[-1]))]
-        remote=remote or (command[0]=='ls-remote' and bool(found))
+        remote=remote or (command is released and bool(found))
         versions+=found
     if versions: latest=max(versions)
     return {'installed':'.'.join(map(str,installed)) if installed is not None else None,
@@ -143,7 +148,8 @@ def main():
     def instruction(path,body):
         old=path.read_text(encoding='utf-8') if path.exists() else ''
         put(path,managed(old,START,END,body))
-    guard=agent_guard_status(args.skills if args.skills is not None else home/'git/skills',args.guard_bin)
+    guard=agent_guard_status(args.skills if args.skills is not None else home/'git/skills',args.guard_bin,
+                             fixture=home!=pathlib.Path.home().resolve())
     mode='full-access' if guard['current'] else 'auto'
     telepathica={'path':None,'before':None,'after':None}
     for path in (home/'.telepathica/config.json',home/'.agent-mailbox/config.json'):

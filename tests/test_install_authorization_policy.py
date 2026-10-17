@@ -192,6 +192,8 @@ class GuardStatusTests(unittest.TestCase):
             self.assertEqual(run.call_args_list[0].args[0], ['/guard', '--version'])
             self.assertEqual(run.call_args_list[0].kwargs['timeout'], 10)
             self.assertNotIn('shell', run.call_args_list[0].kwargs)
+            # The release list comes from the release repository, not the checkout's own remote.
+            self.assertEqual(run.call_args_list[2].args[0][:3], ['gh', 'api', 'repos/royalaid/skills/git/matching-refs/tags/agent-guard-v'])
         with mock.patch.object(installer.subprocess, 'run', side_effect=[self.result('agent-guard 1.0.0'), self.result('agent-guard-v0.4.1'), self.result('x\trefs/tags/agent-guard-v0.4.1')]):
             self.assertTrue(installer.agent_guard_status('/fixture', '/guard')['current'])
 

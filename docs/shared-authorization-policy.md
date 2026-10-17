@@ -35,8 +35,10 @@ it leaves the Codex and OpenCode entries as they are. It prints only that map
 from the config and keeps no backup copy of that file, which holds the hub
 token. `--guard-bin` and `--skills` are refused for the real home. An astropath from
 Telepathica agent-mailbox#146 on re-reads the map each scan; an older one
-needs a restart. The guard counts as current only when `git ls-remote origin`
-in `~/git/skills` lists the release tags; without that answer the mode is auto.
+needs a restart. The guard counts as current only when `gh api` lists the
+`agent-guard-v*` release tags of `royalaid/skills` (never the checkout's own
+remote, which anything writing the checkout can repoint); without that answer
+the mode is auto.
 
 Two chezmoi-managed rule layers sit beside the adapters for Telepathica's
 commands that carry no message body (`find`, `inbox`, `thread`, `whoami`,
