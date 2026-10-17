@@ -1,5 +1,5 @@
 # Managed by chezmoi (dotfiles home/.chezmoitemplates/telepathica.rules, installed as ~/.codex/rules and ~/.codex-work/rules telepathica.rules).
-# Telepathica talks to Royal's astronomican at http://astronomican:47100, which
+# Telepathica talks to Royal's astronomican at http://100.81.139.10:47100, which
 # the workspace-write sandbox cannot reach (os error 10013 on Windows), so these
 # run outside the sandbox. Only subcommands that carry no message body are
 # allowed here. send, notify, reply and release keep going through escalation and
@@ -35,6 +35,6 @@ prefix_rule(
         "telepathica send --to codex@harbor hello",
         "telepathica release ship 1.7.0",
         "telepathica bypass",
-        "curl http://astronomican:47100/v1/find",
+        "curl http://100.81.139.10:47100/v1/find",
     ],
 )

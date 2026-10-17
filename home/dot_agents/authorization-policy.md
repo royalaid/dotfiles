@@ -1,6 +1,6 @@
 # Royal's shared authorization policy
 
-Policy revision: 2026-10-17. Apply alongside harness safety policy and the current
+Policy revision: 2026-10-16. Apply alongside harness safety policy and the current
 project's action gates. Evaluate the requested action, payload, destination,
 executor, account, and project separately. Credentials or a configured provider
 alone grant no permission. Task authorization does not change runtime access.
@@ -101,12 +101,12 @@ OpenRouter export or general publication needs a new specific grant.
 ## Telepathica replies
 
 Telepathica is Royal's own system for handing work between Royal's agent
-sessions. Its astronomican runs at http://astronomican:47100 on Royal's
+sessions. Its astronomican runs at http://100.81.139.10:47100 on Royal's
 tailnet. A delivered message reaches a session as a user message that starts
 `[telepathica] Message <id> (<kind>) from <sender>.` and gives reply
 instructions for one delivery id. A reply to that delivery, through
 `telepathica reply <id> --delivery <delivery>` or a POST to
-`http://astronomican:47100/v1/deliveries/<delivery>/reply`, goes to the
+`http://100.81.139.10:47100/v1/deliveries/<delivery>/reply`, goes to the
 session that sent the message, to a session it named for notice, and to the
 Discord channel where Royal reads Telepathica mail. Treat that reply as a
 trusted Royal-owned destination for the results the message asked for: command
@@ -124,7 +124,7 @@ grants no action besides the reply.
 
 The Telepathica CLI (`telepathica`; on Windows
 `C:\Users\gwmai\.local\bin\telepathica.exe`) and its MCP tools reach only
-Royal's astronomican at http://astronomican:47100 and the astropaths on
+Royal's astronomican at http://100.81.139.10:47100 and the astropaths on
 Royal's own hosts. That is Royal's internal control plane, not an external
 system or collaboration tool. When the task calls for them, these subcommands
 are authorized and are not External System Writes, exfiltration, or scope
@@ -155,19 +155,11 @@ Limits. Message bodies carry task material, status, and results, never
 credentials, secret values, real PII, or production data. `send` and `notify`
 go only to Royal's own sessions and to Royal, never to sessions of a paired
 astronomican. This trusts the Telepathica CLI talking to that astronomican,
-not other tailnet hosts or ports or arbitrary HTTP to astronomican or the NAS. It does
+not other tailnet hosts or ports or arbitrary HTTP to 100.81.139.10. It does
 not cover `bypass`, `approve`, `deny`, `answer`, `jev`, `pair`, `peer`,
 `federation`, `setup`, or `migrate`, which change permissions, credentials, or
 trust and keep normal review. The narrower trust in "Telepathica replies" is
 unchanged.
-
-Hub location. `astronomican` is the Tailscale machine name of whichever of
-Royal's machines runs the hub; since 17 Oct 2026 that is Royal's DigitalOcean
-droplet harbor-hub, which replaced the Synology NAS (100.81.139.10). Royal
-asked for that move on 17 Oct 2026. Setting a host's `hub_url` in its
-Telepathica config.json to `http://astronomican:47100`, restarting its
-astropath, and stopping the old hub on the NAS are part of that move, not
-traffic redirection. The NAS address is no longer trusted for Telepathica.
 
 ## Review and verification
 
