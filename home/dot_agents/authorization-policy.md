@@ -1,6 +1,6 @@
 # Royal's shared authorization policy
 
-Policy revision: 2026-10-16. Apply alongside harness safety policy and the current
+Policy revision: 2026-10-17. Apply alongside harness safety policy and the current
 project's action gates. Evaluate the requested action, payload, destination,
 executor, account, and project separately. Credentials or a configured provider
 alone grant no permission. Task authorization does not change runtime access.
@@ -86,6 +86,35 @@ Limits. This does not cover a force push to a default branch, deleting,
 transferring or renaming a repository, changing its visibility, settings or
 branch protection, or Fisi-Development repositories that did not come from
 royalaid. Company repositories keep their own gates.
+
+## Launch modes
+
+Royal decided on 17 Oct 2026 that every agent launch gets its mode up front,
+by configuration, for every harness and repository: Telepathica handoffs, T3
+threads and delegated tasks, and native subagents.
+
+- Full access on a host where agent-guard is installed and current, meaning the
+  installed binary reports the newest released `agent-guard-v*` version.
+  agent-guard then checks every tool call the session makes, and its rules hold
+  in every mode.
+- Auto on every other host, and wherever the guard's version cannot be read.
+
+A launch takes the mode of the host it runs on.
+`install-authorization-policy.py` writes that mode into the host's Telepathica
+config as `t3_runtime_modes`, one entry per harness, and Telepathica's handoff
+text names the mode it launched in. A T3 child never runs broader than its
+parent: when the parent lacks the mode, it asks Royal to raise the thread
+rather than raising it itself. A native subagent (Claude's Agent tool, Codex's
+subagents) runs in its parent's mode; launching one for the task is ordinary
+delegation, not a permission bypass.
+
+Limits. The mode comes from configuration, never from the agent. An agent does
+not raise its own mode or a running child's, does not add bypass or
+approval-disabling flags to a launch itself, and does not disable, edit or
+route around a deciding layer (agent-guard, a classifier, auto-review). A
+denial of any of those stands. Full access changes no other limit in this
+policy: work Royal scoped read-only stays read-only, and every project gate
+still applies.
 
 ## Authorization provenance
 
